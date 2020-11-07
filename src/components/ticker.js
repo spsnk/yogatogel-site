@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Container, Row, Col } from "react-bootstrap"
+import { Col, Row } from "react-bootstrap"
 import PageVisibility from "react-page-visibility"
 import Ticker from "react-ticker"
 
@@ -11,26 +11,24 @@ const CustomTicker = () => {
   }
 
   return (
-    <Container className="ticker__container">
-      <Row>
-        <Col md={2} className="ticker__title">
-          <p className="my-auto">INFO TERKINI</p>
-        </Col>
-        <Col>
-          <PageVisibility onChange={handleVisibilityChange}>
-            {pageIsVisible && (
-              <Ticker>
-                {() => (
-                  <div className="ticker__item">
-                    <h6>Running Text - New Yogacorp Togel!!! - </h6>
-                  </div>
-                )}
-              </Ticker>
-            )}
-          </PageVisibility>
-        </Col>
-      </Row>
-    </Container>
+    <Row>
+      <Col md={2} sm={12} className="ticker__title">
+        <p className="my-auto text-nowrap">INFO TERKINI</p>
+      </Col>
+      <Col md={10} sm={12}>
+        <PageVisibility onChange={handleVisibilityChange}>
+          {pageIsVisible && (
+            <Ticker>
+              {() => (
+                <div className="ticker__item">
+                  <h6>Running Text - New Yogacorp Togel!!! - </h6>
+                </div>
+              )}
+            </Ticker>
+          )}
+        </PageVisibility>
+      </Col>
+    </Row>
   )
 }
 

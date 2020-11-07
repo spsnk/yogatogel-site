@@ -28,8 +28,12 @@ const Layout = ({ children }) => {
     <>
       <Container as="main" fluid>
         <Nav siteTitle={data.site.siteMetadata.title} />
-        <CustomTicker />
-        <Container id="content">{children}</Container>
+        <Container fluid className="ticker__container">
+          <CustomTicker />
+        </Container>
+        <Container fluid id="content">
+          {children}
+        </Container>
         <Footer />
       </Container>
     </>
