@@ -68,7 +68,7 @@ export default function Rng() {
   }
   return (
     <>
-      <SEO title="Daftar akun" />
+      <SEO title="Draw Test" />
       <Row>
         <Col md={3} className="pl-0">
           <aside className="text-center">

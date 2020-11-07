@@ -3,6 +3,7 @@ import React from "react"
 import { ListGroup, ListGroupItem } from "react-bootstrap"
 
 const Sitenav = ({ activeKey }) => {
+  // TODO migrate whole component here
   return (
     <ListGroup
       activeKey={activeKey}

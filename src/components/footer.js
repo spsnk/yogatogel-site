@@ -8,7 +8,7 @@ import { Col, Row } from "react-bootstrap"
 
 const Footer = () => {
   return (
-    <Row as="footer" className="align-items-center fixed-bottom">
+    <footer className="align-items-center">
       <Col>
         &copy; YOGA all rights reserved. YOGACORP merupakan situs judi tebak
         online sebagal negara melarang PERJUDIAN. <br />
@@ -24,7 +24,7 @@ const Footer = () => {
           <FontAwesomeIcon icon={faFacebookSquare} />
         </a>
       </Col>
-    </Row>
+    </footer>
   )
 }
 
