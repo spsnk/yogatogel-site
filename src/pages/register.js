@@ -1,12 +1,131 @@
-import React from "react"
 import Qstring from "query-string"
+import React from "react"
+import { Col, Form, Row } from "react-bootstrap"
+import SEO from "../components/seo"
+import Sitenav from "../components/sitenav"
 
 const Register = ({ location }) => {
-  console.log(location)
   const qdata = Qstring.parse(location.search)
-  console.log(qdata)
-
-  return "Hello register"
+  const referral = qdata.ref || ""
+  // TODO add validation
+  return (
+    <>
+      <SEO title="Daftar akun" />
+      <Row>
+        <Col md={3} className="pl-0">
+          <aside className="text-center">
+            <Sitenav activeKey="register" />
+          </aside>
+        </Col>
+        <Col>
+          <section>
+            <Form className="form-register">
+              <h2>Pendaftaran</h2>
+              <h5>
+                Silahkan mengisi form pendafataran dibawah ini dengan benar
+              </h5>
+              <Form.Group as={Form.Row} controlId="form-register-username">
+                <Form.Label column md={3}>
+                  Username
+                </Form.Label>
+                <Col>
+                  <Form.Control type="text" placeholder="username" />
+                  <Form.Text className="text-muted">
+                    Minimal 6 karakter, tidak ada karakter khusus.
+                  </Form.Text>
+                </Col>
+              </Form.Group>
+              <Form.Group as={Form.Row} controlId="form-register-password">
+                <Form.Label column md={3}>
+                  Password
+                </Form.Label>
+                <Col>
+                  <Form.Control type="password" placeholder="password" />
+                  <Form.Text className="text-muted">
+                    Minimal 8 karakter, minimal satu angka dan satu huruf.
+                  </Form.Text>
+                </Col>
+              </Form.Group>
+              <Form.Group
+                as={Form.Row}
+                controlId="form-register-passwordconfirm"
+              >
+                <Form.Label column md={3}>
+                  Konfirmasi Password
+                </Form.Label>
+                <Col>
+                  <Form.Control type="password" placeholder="password" />
+                  <Form.Text className="text-muted">
+                    Masukkan kata sandi Anda lagi.
+                  </Form.Text>
+                </Col>
+              </Form.Group>
+              <Form.Group as={Form.Row} controlId="form-register-email">
+                <Form.Label column md={3}>
+                  Email
+                </Form.Label>
+                <Col>
+                  <Form.Control type="email" placeholder="email@gmail.com" />
+                </Col>
+              </Form.Group>
+              <Form.Group as={Form.Row} controlId="form-register-phone">
+                <Form.Label column md={3}>
+                  No. Telefon
+                </Form.Label>
+                <Col>
+                  <Form.Control type="text" placeholder="555-5555" />
+                </Col>
+              </Form.Group>
+              <Form.Group as={Form.Row} controlId="form-register-bank">
+                <Form.Label column md={3}>
+                  Bank
+                </Form.Label>
+                <Col>
+                  <Form.Control as="select" custom>
+                    <option disabled selected>
+                      Bank
+                    </option>
+                    <option value="bca">BCA</option>
+                    <option value="bni">BNI</option>
+                    <option value="bri">BRI</option>
+                    <option value="mdn">Mandiri</option>
+                  </Form.Control>
+                </Col>
+              </Form.Group>
+              <Form.Group as={Form.Row} controlId="form-register-fullname">
+                <Form.Label column md={3}>
+                  Nama Lengkap
+                </Form.Label>
+                <Col>
+                  <Form.Control type="text" placeholder="Nama lengkap" />
+                </Col>
+              </Form.Group>
+              <Form.Group as={Form.Row} controlId="form-register-bankaccount">
+                <Form.Label column md={3}>
+                  Nomor Rekening
+                </Form.Label>
+                <Col>
+                  <Form.Control type="text" placeholder="Nomor Rekening" />
+                </Col>
+              </Form.Group>
+              <Form.Group as={Form.Row} controlId="form-register-referral">
+                <Form.Label column md={3}>
+                  Referral
+                </Form.Label>
+                <Col>
+                  <Form.Control
+                    type="text"
+                    placeholder="referral username"
+                    value={referral}
+                  />
+                </Col>
+              </Form.Group>
+            </Form>
+          </section>
+        </Col>
+      </Row>
+    </>
+  )
 }
 
 export default Register

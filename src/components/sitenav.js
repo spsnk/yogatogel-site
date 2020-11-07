@@ -13,13 +13,18 @@ const Sitenav = ({ activeKey }) => {
       <ListGroupItem action eventKey={"home"} as={Link} to="/">
         Home
       </ListGroupItem>
-      <ListGroupItem action>Pendaftaran</ListGroupItem>
+      <ListGroupItem action eventKey={"register"} as={Link} to="/register">
+        Pendaftaran
+      </ListGroupItem>
       <ListGroupItem action>Lupa Password</ListGroupItem>
       <ListGroupItem action>Cara Main</ListGroupItem>
       <ListGroupItem action>Promo</ListGroupItem>
       <ListGroupItem action>Buku Mimpi</ListGroupItem>
       <ListGroupItem action>History Nomor</ListGroupItem>
       <ListGroupItem action>Referral</ListGroupItem>
+      <ListGroupItem action eventKey={"notrng"} as={Link} to="/rng">
+        Random Number Generator
+      </ListGroupItem>
     </ListGroup>
   )
 }
