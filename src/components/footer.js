@@ -8,7 +8,7 @@ import { Col, Row } from "react-bootstrap"
 
 const Footer = () => {
   return (
-    <Row as="footer" className="footer align-items-center">
+    <Row as="footer" className="align-items-center fixed-bottom">
       <Col>
         &copy; YOGA all rights reserved. YOGACORP merupakan situs judi tebak
         online sebagal negara melarang PERJUDIAN. <br />

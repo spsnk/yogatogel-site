@@ -5,6 +5,7 @@
  */
 
 module.exports = {
+  pathPrefix: "/yogatogel-site",
   siteMetadata: {
     title: `YogaTogel`,
     description: `TODO`,
