@@ -1,5 +1,6 @@
 body {
   color: #0e305d;
+  overflow-y: scroll;
 }
 
 *:not(.ticker__element) {
@@ -11,7 +12,8 @@ body {
 }
 
 .login .form-control,
-.login button {
+.login button,
+.form-register button {
   border-radius: 20px;
   margin-right: 1rem;
   width: 150px;
@@ -22,6 +24,9 @@ body {
   max-width: 250px;
   border-radius: 20px;
   margin-right: 1rem;
+}
+.form-register button {
+  background-color: #f1cb82;
 }
 
 option[disabled] {

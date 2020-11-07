@@ -23,7 +23,7 @@ const Sitenav = ({ activeKey }) => {
       <ListGroupItem action>History Nomor</ListGroupItem>
       <ListGroupItem action>Referral</ListGroupItem>
       <ListGroupItem action eventKey={"notrng"} as={Link} to="/rng">
-        Random Number Generator
+        Test Draw
       </ListGroupItem>
     </ListGroup>
   )

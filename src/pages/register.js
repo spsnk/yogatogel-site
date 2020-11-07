@@ -1,6 +1,6 @@
 import Qstring from "query-string"
 import React from "react"
-import { Col, Form, Row } from "react-bootstrap"
+import { Button, Col, Form, Row } from "react-bootstrap"
 import SEO from "../components/seo"
 import Sitenav from "../components/sitenav"
 
@@ -81,8 +81,8 @@ const Register = ({ location }) => {
                   Bank
                 </Form.Label>
                 <Col>
-                  <Form.Control as="select" custom>
-                    <option disabled selected>
+                  <Form.Control as="select" defaultValue="bank" custom>
+                    <option disabled value="bank">
                       Bank
                     </option>
                     <option value="bca">BCA</option>
@@ -120,6 +120,13 @@ const Register = ({ location }) => {
                   />
                 </Col>
               </Form.Group>
+              <Row>
+                <Col md={{ offset: 3 }}>
+                  <Button type="submit" variant="warning">
+                    Register
+                  </Button>
+                </Col>
+              </Row>
             </Form>
           </section>
         </Col>
