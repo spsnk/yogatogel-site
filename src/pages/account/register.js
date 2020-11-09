@@ -1,8 +1,8 @@
 import Qstring from "query-string"
 import React from "react"
 import { Button, Col, Form, Row } from "react-bootstrap"
-import SEO from "../components/seo"
-import Sitenav from "../components/sitenav"
+import SEO from "src/components/seo"
+import Sitenav from "src/components/sitenav"
 
 const Register = ({ location }) => {
   const qdata = Qstring.parse(location.search)
@@ -12,11 +12,7 @@ const Register = ({ location }) => {
     <>
       <SEO title="Daftar akun" />
       <Row>
-        <Col md={3} className="pl-0">
-          <aside className="text-center">
-            <Sitenav activeKey="register" />
-          </aside>
-        </Col>
+        <Sitenav activeKey="register" />
         <Col>
           <section>
             <Form className="form-register">
@@ -116,7 +112,7 @@ const Register = ({ location }) => {
                   <Form.Control
                     type="text"
                     placeholder="referral username"
-                    value={referral}
+                    defaultValue={referral}
                   />
                 </Col>
               </Form.Group>
