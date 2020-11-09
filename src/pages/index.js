@@ -40,7 +40,7 @@ export default function Home() {
           children={
             <Button
               as={Link}
-              to="/account/register?ref=neko"
+              to="/account/register?ref=exampleReferral"
               className="register-button mx-auto"
             >
               <h2>DAFTAR</h2>

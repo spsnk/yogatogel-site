@@ -1,37 +1,75 @@
-import { Link } from "gatsby"
-import React from "react"
-import { Col, ListGroup, ListGroupItem } from "react-bootstrap"
+import { Link, navigate } from "gatsby"
+import React, { useState } from "react"
+import { Col, Collapse, ListGroup } from "react-bootstrap"
+import { globalHistory } from "@reach/router"
 
-const Sitenav = ({ activeKey, children }) => {
-  // TODO migrate whole component here
-  return (
-    <Col sm={12} md={3} xl={2} className="pl-0">
+const Sitenav = ({ children }) => {
+  const { location } = globalHistory
+  let keys = location.pathname.split("/")
+  keys = keys.map(k => (k.length > 0 ? k : "home"))
+  console.log(keys)
+  const [account, setAccount] = useState(
+    keys[1] && keys[1] === "account" ? true : false
+  )
+  const menu = (
+    <Col md="auto" className="pl-0">
       <aside className="text-center">
         <ListGroup
-          activeKey={activeKey}
+          activeKey={keys[1]}
           defaultActiveKey="home"
-          className="text-left"
+          className="sitenav text-left"
           as="nav"
         >
-          <ListGroupItem action eventKey={"home"} as={Link} to="/">
+          <ListGroup.Item action eventKey={"home"} as={Link} to="/">
             Home
-          </ListGroupItem>
-          <ListGroupItem action>How to play</ListGroupItem>
-          <ListGroupItem action eventKey={"account"} as={Link} to="/account">
-            Account
-          </ListGroupItem>
-          <ListGroupItem action>Promo</ListGroupItem>
-          <ListGroupItem action>News</ListGroupItem>
-          <ListGroupItem action>Play</ListGroupItem>
-          <ListGroupItem action>Paito</ListGroupItem>
-          <ListGroupItem action eventKey={"notrng"} as={Link} to="/rng">
+          </ListGroup.Item>
+          <ListGroup.Item action>How to play</ListGroup.Item>
+          <ListGroup.Item
+            action
+            eventKey={"account"}
+            onClick={() => {
+              setAccount(!account)
+              navigate("/account")
+            }}
+          >
+            Account &gt;
+          </ListGroup.Item>
+          <Collapse in={account}>
+            <ListGroup activeKey={keys[2]}>
+              <ListGroup.Item action as={Link} eventKey={""} to="/account">
+                Profile
+              </ListGroup.Item>
+              <ListGroup.Item
+                action
+                as={Link}
+                eventKey={"register"}
+                to="/account/register"
+              >
+                Register
+              </ListGroup.Item>
+              <ListGroup.Item
+                action
+                as={Link}
+                eventKey={"recover"}
+                to="/account/recover"
+              >
+                Recover Password
+              </ListGroup.Item>
+            </ListGroup>
+          </Collapse>
+          <ListGroup.Item action>Promo</ListGroup.Item>
+          <ListGroup.Item action>News</ListGroup.Item>
+          <ListGroup.Item action>Play</ListGroup.Item>
+          <ListGroup.Item action>Paito</ListGroup.Item>
+          <ListGroup.Item action eventKey={"rng"} as={Link} to="/rng">
             Test Draw
-          </ListGroupItem>
+          </ListGroup.Item>
         </ListGroup>
         {children}
       </aside>
     </Col>
   )
+  return menu
 }
 
 export default Sitenav

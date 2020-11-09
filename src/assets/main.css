@@ -174,3 +174,7 @@ footer {
   -ms-transform: skewX(-10deg) translateX(-15px);
   transform: skewX(-10deg) translateX(-15px);
 }
+
+.sitenav {
+  width: 15em;
+}
