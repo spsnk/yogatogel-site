@@ -7,7 +7,6 @@ const Sitenav = ({ children }) => {
   const { location } = globalHistory
   let keys = location.pathname.split("/")
   keys = keys.map(k => (k.length > 0 ? k : "home"))
-  console.log(keys)
   const [account, setAccount] = useState(
     keys[1] && keys[1] === "account" ? true : false
   )

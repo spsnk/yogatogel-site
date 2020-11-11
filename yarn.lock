@@ -1236,6 +1236,15 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
+"@hot-loader/react-dom@^17.0.0":
+  version "17.0.0"
+  resolved "https://registry.yarnpkg.com/@hot-loader/react-dom/-/react-dom-17.0.0.tgz#1caa41d16006833717a8443d47e8677a9610dc7c"
+  integrity sha512-Po7ZIrs31ruikciz6bdUM2SNbz+I0ghIVFU+T5Gg9PBm05jn1lzKKysb2XGf4ZG/5og2nbqm4olUZw/lXEE3jg==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    scheduler "^0.20.0"
+
 "@jest/types@^25.5.0":
   version "25.5.0"
   resolved "https://registry.yarnpkg.com/@jest/types/-/types-25.5.0.tgz#4d6a4793f7b9599fc3680877b856a97dbccf2a9d"
@@ -1841,6 +1850,11 @@
   version "14.14.5"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.5.tgz#e92d3b8f76583efa26c1a63a21c9d3c1143daa29"
   integrity sha512-H5Wn24s/ZOukBmDn03nnGTp18A60ny9AmCwnEcgJiTgSGsCO7k+NWP7zjCCbhlcnVCoI+co52dUAt9GMhOSULw==
+
+"@types/node@^14.14.7":
+  version "14.14.7"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.7.tgz#8ea1e8f8eae2430cf440564b98c6dfce1ec5945d"
+  integrity sha512-Zw1vhUSQZYw+7u5dAwNbIA9TuTotpzY/OF7sJM9FqPOF3SPjKnxrjoTktXDZgUjybf4cWVBP7O8wvKdSaGHweg==
 
 "@types/node@^8.5.7":
   version "8.10.65"
@@ -11694,6 +11708,14 @@ scheduler@^0.19.1:
   version "0.19.1"
   resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.19.1.tgz#4f3e2ed2c1a7d65681f4c854fa8c5a1ccb40f196"
   integrity sha512-n/zwRWRYSUj0/3g/otKDRPMh6qv2SYMWNq85IEa8iZyAv8od9zDYpGSnpBEjNgcMNq6Scbu5KfIPxNF72R/2EA==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+
+scheduler@^0.20.0:
+  version "0.20.1"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.20.1.tgz#da0b907e24026b01181ecbc75efdc7f27b5a000c"
+  integrity sha512-LKTe+2xNJBNxu/QhHvDR14wUXHRQbVY5ZOYpOGWRzhydZUqrLb2JBvLPY7cAqFmqrWuDED0Mjk7013SZiOz6Bw==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"

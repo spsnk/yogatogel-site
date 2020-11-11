@@ -7,7 +7,7 @@ const Profile = () => {
     <Row>
       <Sitenav />
     </Row>
-    )
-    }
+  )
+}
 
-    export default Profile
+export default Profile
