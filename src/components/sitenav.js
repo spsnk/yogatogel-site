@@ -11,7 +11,7 @@ const Sitenav = ({ children }) => {
     keys[1] && keys[1] === "account" ? true : false
   )
   const menu = (
-    <Col md="auto" className="pl-0">
+    <Col xs="auto" className="pl-0">
       <aside className="text-center">
         <ListGroup
           activeKey={keys[1]}

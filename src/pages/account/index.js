@@ -1,3 +1,5 @@
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { graphql, navigate, useStaticQuery } from "gatsby"
 import Img from "gatsby-image"
 import React, { useRef, useState } from "react"
@@ -14,7 +16,6 @@ import {
   Row,
   Tooltip,
 } from "react-bootstrap"
-import Icofont from "react-icofont"
 import SEO from "src/components/seo"
 import Sitenav from "src/components/sitenav"
 
@@ -23,14 +24,13 @@ const Profile = location => {
     query {
       default: file(relativePath: { eq: "default-user.png" }) {
         childImageSharp {
-          fixed(width: 250, quality: 80) {
+          fixed(width: 200, quality: 80) {
             ...GatsbyImageSharpFixed_withWebp_tracedSVG
           }
         }
       }
     }
   `)
-  console.log(location)
   const user = {
     userId: "009239123",
     username: "nyan093",
@@ -62,7 +62,25 @@ const Profile = location => {
       <Row>
         <Sitenav />
         <Col>
-          <h2>Profile</h2>
+          <Row as="header">
+            <Col>
+              <h2>Profile</h2>
+            </Col>
+            <Col xs="auto">
+              <Button
+                className="pill btn-logout"
+                variant="outline-primary"
+                onClick={() => navigate("/account/login")}
+              >
+                Log Out
+                <FontAwesomeIcon
+                  className="ml-1"
+                  size="lg"
+                  icon={faArrowLeft}
+                />
+              </Button>
+            </Col>
+          </Row>
           <Row as="section">
             <Col>
               <h3>Personal Info</h3>
@@ -188,8 +206,8 @@ const Profile = location => {
               <div className="text-center align-items-center d-flex flex-column">
                 {user.image && user.image.length > 0 ? (
                   <Image
-                    width={250}
-                    height={250}
+                    width={200}
+                    height={200}
                     roundedCircle
                     style={{ objectFit: "cover", display: "block" }}
                     src={`/avatars/${user.image}`}
@@ -240,6 +258,7 @@ const Profile = location => {
                           borderTopLeftRadius: "0 !important",
                           borderBottomLeftRadius: "0 !important",
                           width: "auto",
+                          margin: 0,
                         }}
                         onClick={() => {
                           navigator.clipboard.writeText(
@@ -258,16 +277,6 @@ const Profile = location => {
                   </Overlay>
                 </Form.Group>
               </Form>
-            </Col>
-            <Col md="auto">
-              <Button
-                className="pill btn-logout"
-                variant="outline-primary"
-                onClick={() => navigate("/account/login")}
-              >
-                Log Out
-                <Icofont icon="arrow-left" />
-              </Button>
             </Col>
           </Row>
         </Col>
