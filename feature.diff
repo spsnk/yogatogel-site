@@ -1,0 +1,493 @@
+diff --git a/gatsby-config.js b/gatsby-config.js
+index 8040b30..57a6733 100644
+--- a/gatsby-config.js
++++ b/gatsby-config.js
+@@ -43,6 +43,7 @@ module.exports = {
+         icon: `src/images/logo.png`, // This path is relative to the root of the site.
+       },
+     },
++    "gatsby-plugin-root-import",
+     // this (optional) plugin enables Progressive Web App + Offline functionality
+     // To learn more, visit: https://gatsby.dev/offline
+     // `gatsby-plugin-offline`,
+diff --git a/package.json b/package.json
+index 02b6a68..4738ec1 100644
+--- a/package.json
++++ b/package.json
+@@ -45,6 +45,7 @@
+   },
+   "devDependencies": {
+     "eslint": "^7.12.1",
++    "gatsby-plugin-root-import": "^2.0.5",
+     "gh-pages": "^3.1.0",
+     "prettier": "2.1.2"
+   },
+diff --git a/src/assets/main.css b/src/assets/main.css
+index d74161b..1f9583d 100755
+--- a/src/assets/main.css
++++ b/src/assets/main.css
+@@ -126,6 +126,7 @@ footer {
+   color: #f6d68b;
+   height: 100% !important;
+   z-index: -2;
++  width: 100%;
+ }
+ 
+ .ticker__element {
+@@ -154,16 +155,16 @@ footer {
+   font-size: 1.5em;
+   font-style: italic;
+   font-weight: bolder;
+-  margin-right: -15px;
+-  display: flex;
++  display: inline-flex;
+   text-align: center;
++  max-width: 7em;
+ }
+ 
+ .ticker__title::after {
+   position: absolute;
+   z-index: -1;
+   content: "";
+-  right: -10%;
++  right: -2em;
+   top: 0;
+   height: 100%;
+   width: 100%;
+diff --git a/src/components/footer.js b/src/components/footer.js
+index 20ca06a..1d14e56 100755
+--- a/src/components/footer.js
++++ b/src/components/footer.js
+@@ -4,11 +4,11 @@ import {
+ } from "@fortawesome/free-brands-svg-icons"
+ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+ import React from "react"
+-import { Col, Row } from "react-bootstrap"
++import { Col } from "react-bootstrap"
+ 
+ const Footer = () => {
+   return (
+-    <footer className="align-items-center">
++    <footer className="align-items-center d-sm-none d-none d-md-flex">
+       <Col>
+         &copy; YOGA all rights reserved. YOGACORP merupakan situs judi tebak
+         online sebagal negara melarang PERJUDIAN. <br />
+@@ -17,10 +17,20 @@ const Footer = () => {
+       </Col>
+       <Col md={3} className="ml-auto d-flex align-items-center">
+         Hubungi Kami:
+-        <a className="social wa" target="_blank" href="#">
++        <a
++          className="social wa"
++          target="_blank"
++          href="https://whatsapp.com"
++          rel="noreferrer"
++        >
+           <FontAwesomeIcon icon={faWhatsappSquare} />
+         </a>
+-        <a className="social fb" target="_blank" href="#">
++        <a
++          className="social fb"
++          target="_blank"
++          href="https://facebook.com"
++          rel="noreferrer"
++        >
+           <FontAwesomeIcon icon={faFacebookSquare} />
+         </a>
+       </Col>
+diff --git a/src/components/layout.js b/src/components/layout.js
+index 4fb16c4..e5504a2 100755
+--- a/src/components/layout.js
++++ b/src/components/layout.js
+@@ -13,7 +13,7 @@ import Footer from "./footer"
+ import Nav from "./navbar"
+ import CustomTicker from "./ticker"
+ 
+-const Layout = ({ children }) => {
++const Layout = ({ children, location }) => {
+   const data = useStaticQuery(graphql`
+     query SiteTitleQuery {
+       site {
+diff --git a/src/components/sitenav.js b/src/components/sitenav.js
+index 036968a..e413952 100755
+--- a/src/components/sitenav.js
++++ b/src/components/sitenav.js
+@@ -1,32 +1,36 @@
+ import { Link } from "gatsby"
+ import React from "react"
+-import { ListGroup, ListGroupItem } from "react-bootstrap"
++import { Col, ListGroup, ListGroupItem } from "react-bootstrap"
+ 
+-const Sitenav = ({ activeKey }) => {
++const Sitenav = ({ activeKey, children }) => {
+   // TODO migrate whole component here
+   return (
+-    <ListGroup
+-      activeKey={activeKey}
+-      defaultActiveKey="home"
+-      className="text-left"
+-      as="nav"
+-    >
+-      <ListGroupItem action eventKey={"home"} as={Link} to="/">
+-        Home
+-      </ListGroupItem>
+-      <ListGroupItem action eventKey={"register"} as={Link} to="/register">
+-        Pendaftaran
+-      </ListGroupItem>
+-      <ListGroupItem action>Lupa Password</ListGroupItem>
+-      <ListGroupItem action>Cara Main</ListGroupItem>
+-      <ListGroupItem action>Promo</ListGroupItem>
+-      <ListGroupItem action>Buku Mimpi</ListGroupItem>
+-      <ListGroupItem action>History Nomor</ListGroupItem>
+-      <ListGroupItem action>Referral</ListGroupItem>
+-      <ListGroupItem action eventKey={"notrng"} as={Link} to="/rng">
+-        Test Draw
+-      </ListGroupItem>
+-    </ListGroup>
++    <Col sm={12} md={3} xl={2} className="pl-0">
++      <aside className="text-center">
++        <ListGroup
++          activeKey={activeKey}
++          defaultActiveKey="home"
++          className="text-left"
++          as="nav"
++        >
++          <ListGroupItem action eventKey={"home"} as={Link} to="/">
++            Home
++          </ListGroupItem>
++          <ListGroupItem action>How to play</ListGroupItem>
++          <ListGroupItem action eventKey={"account"} as={Link} to="/account">
++            Account
++          </ListGroupItem>
++          <ListGroupItem action>Promo</ListGroupItem>
++          <ListGroupItem action>News</ListGroupItem>
++          <ListGroupItem action>Play</ListGroupItem>
++          <ListGroupItem action>Paito</ListGroupItem>
++          <ListGroupItem action eventKey={"notrng"} as={Link} to="/rng">
++            Test Draw
++          </ListGroupItem>
++        </ListGroup>
++        {children}
++      </aside>
++    </Col>
+   )
+ }
+ 
+diff --git a/src/components/ticker.js b/src/components/ticker.js
+index 2e5b058..f9e9a4b 100755
+--- a/src/components/ticker.js
++++ b/src/components/ticker.js
+@@ -12,15 +12,15 @@ const CustomTicker = () => {
+ 
+   return (
+     <Row>
+-      <Col md={2} sm={12} className="ticker__title">
++      <Col md="auto" className="ticker__title">
+         <p className="my-auto text-nowrap">INFO TERKINI</p>
+       </Col>
+-      <Col md={10} sm={12}>
++      <Col>
+         <PageVisibility onChange={handleVisibilityChange}>
+           {pageIsVisible && (
+             <Ticker>
+               {() => (
+-                <div className="ticker__item">
++                <div className="ticker__item text-nowrap">
+                   <h6>Running Text - New Yogacorp Togel!!! - </h6>
+                 </div>
+               )}
+diff --git a/src/pages/404.js b/src/pages/404.js
+index 907fec4..c82343a 100755
+--- a/src/pages/404.js
++++ b/src/pages/404.js
+@@ -1,6 +1,6 @@
+ import React from "react"
+ 
+-import SEO from "../components/seo"
++import SEO from "src/components/seo"
+ 
+ const NotFoundPage = () => (
+   <section>
+diff --git a/src/pages/index.js b/src/pages/index.js
+index cb04a56..411ba45 100644
+--- a/src/pages/index.js
++++ b/src/pages/index.js
+@@ -2,8 +2,8 @@ import { graphql, Link, useStaticQuery } from "gatsby"
+ import Img from "gatsby-image"
+ import React from "react"
+ import { Button, Carousel, Col, Row } from "react-bootstrap"
+-import SEO from "../components/seo"
+-import Sitenav from "../components/sitenav"
++import SEO from "src/components/seo"
++import Sitenav from "src/components/sitenav"
+ 
+ export default function Home() {
+   const data = useStaticQuery(graphql`
+@@ -35,29 +35,27 @@ export default function Home() {
+     <>
+       <SEO title="Home" />
+       <Row>
+-        <Col md={3} className="pl-0">
+-          <aside className="text-center">
+-            <Sitenav activeKey="home" />
++        <Sitenav
++          activeKey="home"
++          children={
+             <Button
+               as={Link}
+-              to="/register?ref=neko"
++              to="/account/register?ref=neko"
+               className="register-button mx-auto"
+             >
+               <h2>DAFTAR</h2>
+             </Button>
+-          </aside>
+-        </Col>
+-        <Col>
+-          <section>
+-            <Carousel id="index-carousel">
+-              <Carousel.Item key="slide-1">
+-                <Img fluid={data.bg1.childImageSharp.fluid} />
+-              </Carousel.Item>
+-              <Carousel.Item key="slide-2">
+-                <Img fluid={data.bg2.childImageSharp.fluid} />
+-              </Carousel.Item>
+-            </Carousel>
+-          </section>
++          }
++        />
++        <Col as="section">
++          <Carousel id="index-carousel">
++            <Carousel.Item key="slide-1">
++              <Img fluid={data.bg1.childImageSharp.fluid} />
++            </Carousel.Item>
++            <Carousel.Item key="slide-2">
++              <Img fluid={data.bg2.childImageSharp.fluid} />
++            </Carousel.Item>
++          </Carousel>
+         </Col>
+       </Row>
+     </>
+diff --git a/src/pages/register.js b/src/pages/register.js
+deleted file mode 100755
+index 851b55a..0000000
+--- a/src/pages/register.js
++++ /dev/null
+@@ -1,138 +0,0 @@
+-import Qstring from "query-string"
+-import React from "react"
+-import { Button, Col, Form, Row } from "react-bootstrap"
+-import SEO from "../components/seo"
+-import Sitenav from "../components/sitenav"
+-
+-const Register = ({ location }) => {
+-  const qdata = Qstring.parse(location.search)
+-  const referral = qdata.ref || ""
+-  // TODO add validation
+-  return (
+-    <>
+-      <SEO title="Daftar akun" />
+-      <Row>
+-        <Col md={3} className="pl-0">
+-          <aside className="text-center">
+-            <Sitenav activeKey="register" />
+-          </aside>
+-        </Col>
+-        <Col>
+-          <section>
+-            <Form className="form-register">
+-              <h2>Pendaftaran</h2>
+-              <h5>
+-                Silahkan mengisi form pendafataran dibawah ini dengan benar
+-              </h5>
+-              <Form.Group as={Form.Row} controlId="form-register-username">
+-                <Form.Label column md={3}>
+-                  Username
+-                </Form.Label>
+-                <Col>
+-                  <Form.Control type="text" placeholder="username" />
+-                  <Form.Text className="text-muted">
+-                    Minimal 6 karakter, tidak ada karakter khusus.
+-                  </Form.Text>
+-                </Col>
+-              </Form.Group>
+-              <Form.Group as={Form.Row} controlId="form-register-password">
+-                <Form.Label column md={3}>
+-                  Password
+-                </Form.Label>
+-                <Col>
+-                  <Form.Control type="password" placeholder="password" />
+-                  <Form.Text className="text-muted">
+-                    Minimal 8 karakter, minimal satu angka dan satu huruf.
+-                  </Form.Text>
+-                </Col>
+-              </Form.Group>
+-              <Form.Group
+-                as={Form.Row}
+-                controlId="form-register-passwordconfirm"
+-              >
+-                <Form.Label column md={3}>
+-                  Konfirmasi Password
+-                </Form.Label>
+-                <Col>
+-                  <Form.Control type="password" placeholder="password" />
+-                  <Form.Text className="text-muted">
+-                    Masukkan kata sandi Anda lagi.
+-                  </Form.Text>
+-                </Col>
+-              </Form.Group>
+-              <Form.Group as={Form.Row} controlId="form-register-email">
+-                <Form.Label column md={3}>
+-                  Email
+-                </Form.Label>
+-                <Col>
+-                  <Form.Control type="email" placeholder="email@gmail.com" />
+-                </Col>
+-              </Form.Group>
+-              <Form.Group as={Form.Row} controlId="form-register-phone">
+-                <Form.Label column md={3}>
+-                  No. Telefon
+-                </Form.Label>
+-                <Col>
+-                  <Form.Control type="text" placeholder="555-5555" />
+-                </Col>
+-              </Form.Group>
+-              <Form.Group as={Form.Row} controlId="form-register-bank">
+-                <Form.Label column md={3}>
+-                  Bank
+-                </Form.Label>
+-                <Col>
+-                  <Form.Control as="select" defaultValue="bank" custom>
+-                    <option disabled value="bank">
+-                      Bank
+-                    </option>
+-                    <option value="bca">BCA</option>
+-                    <option value="bni">BNI</option>
+-                    <option value="bri">BRI</option>
+-                    <option value="mdn">Mandiri</option>
+-                  </Form.Control>
+-                </Col>
+-              </Form.Group>
+-              <Form.Group as={Form.Row} controlId="form-register-fullname">
+-                <Form.Label column md={3}>
+-                  Nama Lengkap
+-                </Form.Label>
+-                <Col>
+-                  <Form.Control type="text" placeholder="Nama lengkap" />
+-                </Col>
+-              </Form.Group>
+-              <Form.Group as={Form.Row} controlId="form-register-bankaccount">
+-                <Form.Label column md={3}>
+-                  Nomor Rekening
+-                </Form.Label>
+-                <Col>
+-                  <Form.Control type="text" placeholder="Nomor Rekening" />
+-                </Col>
+-              </Form.Group>
+-              <Form.Group as={Form.Row} controlId="form-register-referral">
+-                <Form.Label column md={3}>
+-                  Referral
+-                </Form.Label>
+-                <Col>
+-                  <Form.Control
+-                    type="text"
+-                    placeholder="referral username"
+-                    value={referral}
+-                  />
+-                </Col>
+-              </Form.Group>
+-              <Row>
+-                <Col md={{ offset: 3 }}>
+-                  <Button type="submit" variant="warning">
+-                    Register
+-                  </Button>
+-                </Col>
+-              </Row>
+-            </Form>
+-          </section>
+-        </Col>
+-      </Row>
+-    </>
+-  )
+-}
+-
+-export default Register
+diff --git a/src/pages/rng.js b/src/pages/rng.js
+index 9d454b5..68b2976 100755
+--- a/src/pages/rng.js
++++ b/src/pages/rng.js
+@@ -1,7 +1,7 @@
+ import React, { useState } from "react"
+ import { Badge, Button, Col, Form, Row, Table } from "react-bootstrap"
+-import SEO from "../components/seo"
+-import Sitenav from "../components/sitenav"
++import SEO from "src/components/seo"
++import Sitenav from "src/components/sitenav"
+ 
+ export default function Rng() {
+   const [values, setValues] = useState({
+@@ -70,11 +70,7 @@ export default function Rng() {
+     <>
+       <SEO title="Draw Test" />
+       <Row>
+-        <Col md={3} className="pl-0">
+-          <aside className="text-center">
+-            <Sitenav activeKey="notrng" />
+-          </aside>
+-        </Col>
++        <Sitenav activeKey="notrng" />
+         <Col className="pt-5">
+           <Form onSubmit={randomize}>
+             <Form.Row>
+@@ -85,6 +81,8 @@ export default function Rng() {
+                     placeholder={9}
+                     onChange={handleChange}
+                     value={values.one}
++                    min={0}
++                    max={9}
+                   />
+                   <Form.Label>First number</Form.Label>
+                 </Form.Group>
+@@ -108,6 +106,8 @@ export default function Rng() {
+                     placeholder={9}
+                     onChange={handleChange}
+                     value={values.two}
++                    min={0}
++                    max={9}
+                   />
+                   <Form.Label>Second number</Form.Label>
+                 </Form.Group>
+@@ -131,6 +131,8 @@ export default function Rng() {
+                     placeholder={9}
+                     onChange={handleChange}
+                     value={values.three}
++                    min={0}
++                    max={9}
+                   />
+                   <Form.Label>Third number</Form.Label>
+                 </Form.Group>
+@@ -154,6 +156,8 @@ export default function Rng() {
+                     placeholder={9}
+                     onChange={handleChange}
+                     value={values.four}
++                    min={0}
++                    max={9}
+                   />
+                   <Form.Label>Fourth number</Form.Label>
+                 </Form.Group>
+diff --git a/yarn.lock b/yarn.lock
+index dc19bcb..049ff83 100644
+--- a/yarn.lock
++++ b/yarn.lock
+@@ -6213,6 +6213,11 @@ gatsby-plugin-react-helmet@^3.3.14:
+   dependencies:
+     "@babel/runtime" "^7.11.2"
+ 
++gatsby-plugin-root-import@^2.0.5:
++  version "2.0.5"
++  resolved "https://registry.yarnpkg.com/gatsby-plugin-root-import/-/gatsby-plugin-root-import-2.0.5.tgz#04e520dc661d67f49aa7950f11b7c780fd2fdbd3"
++  integrity sha512-/yA6rFjfjiFb8D6nCjfFrrGqYQMkOt4J3u2o6s7VYEF/zpA5dw2C9ENJ5fDKkJSCbbwLiEIGVMMee3vMEip2zA==
++
+ gatsby-plugin-sharp@^2.7.0:
+   version "2.7.0"
+   resolved "https://registry.yarnpkg.com/gatsby-plugin-sharp/-/gatsby-plugin-sharp-2.7.0.tgz#5bf1c27f30481c61e01923eec28c6c2b2496161d"

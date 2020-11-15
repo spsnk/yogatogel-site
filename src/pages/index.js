@@ -2,8 +2,8 @@ import { graphql, Link, useStaticQuery } from "gatsby"
 import Img from "gatsby-image"
 import React from "react"
 import { Button, Carousel, Col, Row } from "react-bootstrap"
-import SEO from "../components/seo"
-import Sitenav from "../components/sitenav"
+import SEO from "src/components/seo"
+import Sitenav from "src/components/sitenav"
 
 export default function Home() {
   const data = useStaticQuery(graphql`
@@ -35,29 +35,27 @@ export default function Home() {
     <>
       <SEO title="Home" />
       <Row>
-        <Col md={3} className="pl-0">
-          <aside className="text-center">
-            <Sitenav activeKey="home" />
+        <Sitenav
+          activeKey="home"
+          children={
             <Button
               as={Link}
-              to="/register?ref=neko"
+              to="/account/register?ref=exampleReferral"
               className="register-button mx-auto"
             >
-              <h2>DAFTAR</h2>
+              DAFTAR
             </Button>
-          </aside>
-        </Col>
-        <Col>
-          <section>
-            <Carousel id="index-carousel">
-              <Carousel.Item key="slide-1">
-                <Img fluid={data.bg1.childImageSharp.fluid} />
-              </Carousel.Item>
-              <Carousel.Item key="slide-2">
-                <Img fluid={data.bg2.childImageSharp.fluid} />
-              </Carousel.Item>
-            </Carousel>
-          </section>
+          }
+        />
+        <Col as="section">
+          <Carousel id="index-carousel">
+            <Carousel.Item key="slide-1">
+              <Img fluid={data.bg1.childImageSharp.fluid} />
+            </Carousel.Item>
+            <Carousel.Item key="slide-2">
+              <Img fluid={data.bg2.childImageSharp.fluid} />
+            </Carousel.Item>
+          </Carousel>
         </Col>
       </Row>
     </>

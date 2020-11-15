@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Badge, Button, Col, Form, Row, Table } from "react-bootstrap"
-import SEO from "../components/seo"
-import Sitenav from "../components/sitenav"
+import SEO from "src/components/seo"
+import Sitenav from "src/components/sitenav"
 
 export default function Rng() {
   const [values, setValues] = useState({
@@ -70,11 +70,7 @@ export default function Rng() {
     <>
       <SEO title="Draw Test" />
       <Row>
-        <Col md={3} className="pl-0">
-          <aside className="text-center">
-            <Sitenav activeKey="notrng" />
-          </aside>
-        </Col>
+        <Sitenav activeKey="notrng" />
         <Col className="pt-5">
           <Form onSubmit={randomize}>
             <Form.Row>
@@ -85,6 +81,8 @@ export default function Rng() {
                     placeholder={9}
                     onChange={handleChange}
                     value={values.one}
+                    min={0}
+                    max={9}
                   />
                   <Form.Label>First number</Form.Label>
                 </Form.Group>
@@ -108,6 +106,8 @@ export default function Rng() {
                     placeholder={9}
                     onChange={handleChange}
                     value={values.two}
+                    min={0}
+                    max={9}
                   />
                   <Form.Label>Second number</Form.Label>
                 </Form.Group>
@@ -131,6 +131,8 @@ export default function Rng() {
                     placeholder={9}
                     onChange={handleChange}
                     value={values.three}
+                    min={0}
+                    max={9}
                   />
                   <Form.Label>Third number</Form.Label>
                 </Form.Group>
@@ -154,6 +156,8 @@ export default function Rng() {
                     placeholder={9}
                     onChange={handleChange}
                     value={values.four}
+                    min={0}
+                    max={9}
                   />
                   <Form.Label>Fourth number</Form.Label>
                 </Form.Group>

@@ -13,7 +13,7 @@ import Footer from "./footer"
 import Nav from "./navbar"
 import CustomTicker from "./ticker"
 
-const Layout = ({ children }) => {
+const Layout = ({ children, location }) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {

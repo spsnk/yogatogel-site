@@ -12,15 +12,15 @@ const CustomTicker = () => {
 
   return (
     <Row>
-      <Col md={2} sm={12} className="ticker__title">
+      <Col md="auto" className="ticker__title">
         <p className="my-auto text-nowrap">INFO TERKINI</p>
       </Col>
-      <Col md={10} sm={12}>
+      <Col>
         <PageVisibility onChange={handleVisibilityChange}>
           {pageIsVisible && (
             <Ticker>
               {() => (
-                <div className="ticker__item">
+                <div className="ticker__item text-nowrap">
                   <h6>Running Text - New Yogacorp Togel!!! - </h6>
                 </div>
               )}
