@@ -5,10 +5,10 @@ import { globalHistory } from "@reach/router"
 
 const Sitenav = ({ children }) => {
   const { location } = globalHistory
-  let keys = location.pathname.split("/")
+  let keys = location.pathname.replace("/yogatogel-site", "").split("/")
   keys = keys.map(k => (k.length > 0 ? k : "home"))
   const [account, setAccount] = useState(
-    keys[1] && keys[1] === "account" ? true : false
+    keys.length > 1 && keys[1] === "account" ? true : false
   )
   const menu = (
     <Col xs="auto" className="pl-0">
