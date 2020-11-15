@@ -28,14 +28,23 @@ const Sitenav = ({ children }) => {
             eventKey={"account"}
             onClick={() => {
               setAccount(!account)
-              navigate("/account")
+              navigate("/account/")
             }}
+            className="submenu"
           >
-            Account &gt;
+            Account
           </ListGroup.Item>
           <Collapse in={account}>
             <ListGroup activeKey={keys[2]}>
-              <ListGroup.Item action as={Link} eventKey={""} to="/account">
+              <ListGroup.Item
+                action
+                as={Link}
+                eventKey={"login"}
+                to="/account/login"
+              >
+                Login
+              </ListGroup.Item>
+              <ListGroup.Item action as={Link} eventKey={"home"} to="/account/">
                 Profile
               </ListGroup.Item>
               <ListGroup.Item

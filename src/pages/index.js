@@ -43,7 +43,7 @@ export default function Home() {
               to="/account/register?ref=exampleReferral"
               className="register-button mx-auto"
             >
-              <h2>DAFTAR</h2>
+              DAFTAR
             </Button>
           }
         />

@@ -15,11 +15,9 @@ const Register = ({ location }) => {
         <Sitenav activeKey="register" />
         <Col>
           <section>
+            <h2>Pendaftaran</h2>
+            <h5>Silahkan mengisi form pendafataran dibawah ini dengan benar</h5>
             <Form className="form-register">
-              <h2>Pendaftaran</h2>
-              <h5>
-                Silahkan mengisi form pendafataran dibawah ini dengan benar
-              </h5>
               <Form.Group as={Form.Row} controlId="form-register-username">
                 <Form.Label column md={3}>
                   Username

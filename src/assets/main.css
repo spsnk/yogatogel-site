@@ -16,20 +16,28 @@ main {
   background-color: #0e305d;
 }
 
-.login .form-control,
-.login button,
-.form-register button {
+form .form-control,
+form button,
+form .btn,
+.pill {
   border-radius: 20px;
-  margin-right: 1rem;
-  width: 150px;
 }
 
-.form-register input,
-.form-register select {
+.login .form-control,
+form button {
+  width: 150px;
+  margin-right: 1rem;
+}
+
+form input,
+form select,
+form .form-control,
+form .custom-select {
   max-width: 250px;
   border-radius: 20px;
   margin-right: 1rem;
 }
+
 .form-register button {
   background-color: #f1cb82;
 }
@@ -38,8 +46,8 @@ option[disabled] {
   display: none;
 }
 
-.form-register h2,
-.form-register h5 {
+h2,
+h5 {
   margin-top: 1em;
   margin-bottom: 1em;
 }
@@ -96,7 +104,7 @@ footer {
 }
 
 #content {
-  padding-bottom: 80px;
+  padding-bottom: calc(72px + 1em);
 }
 
 .register-button {
@@ -105,13 +113,15 @@ footer {
   width: 100%;
   background-color: #0e305d;
   font-style: italic;
+  font-weight: bolder;
+  font-size: xx-large;
 }
 
 .list-group-item {
-  border-left: 0;
-  border-right: 0;
-  border-top: 0;
-  border-bottom: 2px solid #0e305d;
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid #0e305d;
   color: #0e305d;
   font-weight: bold;
   letter-spacing: -1px;
@@ -177,4 +187,36 @@ footer {
 
 .sitenav {
   width: 15em;
+}
+
+.list-group > .list-group .list-group-item {
+  padding-left: 3em;
+}
+.list-group > .list-group .list-group-item.active {
+  background-color: #6499da;
+}
+.list-group > .list-group .list-group-item::before {
+  content: "";
+  display: inline-block;
+  border: 5px solid transparent;
+  border-left: 5px solid #0c305d;
+}
+
+.submenu:before {
+  content: "+";
+  margin-right: 0.5em;
+}
+.submenu.active:before {
+  content: "-";
+  margin-right: 0.5em;
+}
+
+.btn-logout {
+  border-radius: 300px;
+  border-width: 0.25em;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+  height: 7em;
+  width: 7em;
 }
