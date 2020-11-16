@@ -47,7 +47,7 @@ export default function Home() {
             </Button>
           }
         />
-        <Col as="section">
+        <Col as="section" style={{ maxWidth: "75vw", marginLeft: "auto" }}>
           <Carousel id="index-carousel">
             <Carousel.Item key="slide-1">
               <Img fluid={data.bg1.childImageSharp.fluid} />

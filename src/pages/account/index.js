@@ -246,7 +246,7 @@ const Profile = location => {
                         borderTopRightRadius: "0",
                         borderBottomRightRadius: "0",
                       }}
-                      value={`${location.location.origin}/register/?ref=${user.username}`}
+                      value={`${location.location.href}register/?ref=${user.username}`}
                     />
                     <InputGroup.Append
                       style={{
@@ -262,7 +262,7 @@ const Profile = location => {
                         }}
                         onClick={() => {
                           navigator.clipboard.writeText(
-                            `${location.location.origin}/register/?ref=${user.username}`
+                            `${location.location.href}register/?ref=${user.username}`
                           )
                           setShow(true)
                           setTimeout(() => setShow(false), 2000)

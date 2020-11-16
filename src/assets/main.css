@@ -129,6 +129,7 @@ footer {
 
 .list-group-item.active {
   background-color: #0e305d;
+  clip-path: polygon(0% 0%, 90% 0%, 100% 50%, 90% 100%, 0% 100%);
 }
 
 .ticker {
@@ -220,7 +221,7 @@ footer {
   height: 7em;
   width: 7em;
   /* clip-path: inset(15% 0 15% 0); */
-  clip-path: polygon(
+  /* clip-path: polygon(
     40% 0,
     40% 20%,
     100% 20%,
@@ -228,5 +229,6 @@ footer {
     40% 80%,
     40% 100%,
     0% 50%
-  );
+  ); */
+  clip-path: polygon(30% 20%, 100% 20%, 100% 80%, 30% 80%, 0% 50%);
 }

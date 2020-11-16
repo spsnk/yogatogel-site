@@ -3,7 +3,7 @@ import { Row } from "react-bootstrap"
 import Sitenav from "src/components/sitenav"
 import UnderConstruction from "src/components/uc"
 
-const Recover = () => {
+const Paito = () => {
   return (
     <Row>
       <Sitenav />
@@ -12,4 +12,4 @@ const Recover = () => {
   )
 }
 
-export default Recover
+export default Paito

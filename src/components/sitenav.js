@@ -68,7 +68,9 @@ const Sitenav = ({ children }) => {
           <ListGroup.Item action>Promo</ListGroup.Item>
           <ListGroup.Item action>News</ListGroup.Item>
           <ListGroup.Item action>Play</ListGroup.Item>
-          <ListGroup.Item action>Paito</ListGroup.Item>
+          <ListGroup.Item action eventKey={"paito"} as={Link} to="/paito">
+            Paito
+          </ListGroup.Item>
           <ListGroup.Item action eventKey={"rng"} as={Link} to="/rng">
             Test Draw
           </ListGroup.Item>
