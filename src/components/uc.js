@@ -19,8 +19,6 @@ const UnderConstruction = () => {
     }
   `)
 
-  console.log(image)
-
   return (
     <Col xs="auto" className="mx-auto">
       <div style={{ width: "60vh" }}>
