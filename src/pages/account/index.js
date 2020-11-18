@@ -41,15 +41,16 @@ const Profile = location => {
     credit: 2.691,
     bonus: 0,
     outstandingBet: 0,
-    bank: "bca",
+    bank: "2",
     bankAccount: "6300092193",
     bankAccountName: "Nyan Hazz",
     referral: "neko",
   }
 
   const [edit, setEdit] = useState(false)
-  const target = useRef(null)
   const [show, setShow] = useState(false)
+  const [bank, setBank] = useState(user.bank)
+  const tooltipTarget = useRef(null)
   const handleSubmit = e => {
     e.preventDefault()
     // TODO send data to server and authenticate
@@ -88,8 +89,16 @@ const Profile = location => {
                 <Form.Group controlId="userinfo-userid">
                   <Form.Control
                     type="text"
-                    disabled={true}
+                    readOnly={true}
                     value={user.userId}
+                    hidden={true}
+                  />
+                </Form.Group>
+                <Form.Group controlId="userinfo-username">
+                  <Form.Control
+                    type="text"
+                    readOnly={true}
+                    value={user.username}
                     hidden={true}
                   />
                 </Form.Group>
@@ -97,7 +106,7 @@ const Profile = location => {
                   <Form.Text>Display Name</Form.Text>
                   <Form.Control
                     type="text"
-                    disabled={!edit}
+                    readOnly={!edit}
                     value={user.name}
                   />
                 </Form.Group>
@@ -105,7 +114,7 @@ const Profile = location => {
                   <Form.Text>Email</Form.Text>
                   <Form.Control
                     type="text"
-                    disabled={!edit}
+                    readOnly={!edit}
                     value={user.email}
                   />
                 </Form.Group>
@@ -113,30 +122,39 @@ const Profile = location => {
                   <Form.Text>No. Telefon</Form.Text>
                   <Form.Control
                     type="text"
-                    disabled={!edit}
+                    readOnly={!edit}
                     value={user.phone}
                   />
                 </Form.Group>
                 <h4>Rekening Bank</h4>
                 <Form.Group controlId="userinfo-bank">
                   <Form.Text>Bank</Form.Text>
-                  <Form.Control
-                    as="select"
+                  <select
                     defaultValue={user.bank}
                     disabled={!edit}
-                    custom
+                    onBlur={({ target }) =>
+                      setBank(target.options[target.selectedIndex].value)
+                    }
+                    className="form-control custom-select"
                   >
-                    <option value="bca">BCA</option>
-                    <option value="bni">BNI</option>
-                    <option value="bri">BRI</option>
-                    <option value="mdn">Mandiri</option>
-                  </Form.Control>
+                    <option value="1">BCA</option>
+                    <option value="2">BNI</option>
+                    <option value="3">BRI</option>
+                    <option value="4">Mandiri</option>
+                  </select>
+                  <Form.Control
+                    type="text"
+                    readOnly={!edit}
+                    defaultValue={user.bank}
+                    value={bank}
+                    hidden={true}
+                  />
                 </Form.Group>
                 <Form.Group controlId="userinfo-bankAccount">
                   <Form.Text>No. Rekening</Form.Text>
                   <Form.Control
                     type="text"
-                    disabled={!edit}
+                    readOnly={!edit}
                     value={user.bankAccount}
                   />
                 </Form.Group>
@@ -144,10 +162,21 @@ const Profile = location => {
                   <Form.Text>Atas Nama</Form.Text>
                   <Form.Control
                     type="text"
-                    disabled={!edit}
+                    readOnly={!edit}
                     value={user.bankAccountName}
                   />
                 </Form.Group>
+                <div>
+                  <Button
+                    onClick={() => setEdit(!edit)}
+                    variant={edit ? "danger" : "primary"}
+                  >
+                    {edit ? "Cancel" : "Edit"}
+                  </Button>
+                  <Fade in={edit}>
+                    <Button type="submit">Save</Button>
+                  </Fade>
+                </div>
                 <Collapse in={edit}>
                   <div className="p-0 m-0">
                     <Form.Group controlId="userinfo-password">
@@ -156,20 +185,12 @@ const Profile = location => {
                       </Form.Text>
                       <Form.Control
                         type="password"
-                        disabled={!edit}
+                        readOnly={!edit}
                         placeholder="Password"
                       />
                     </Form.Group>
                   </div>
                 </Collapse>
-                <div>
-                  <Button onClick={() => setEdit(!edit)}>
-                    {edit ? "Cancel" : "Edit"}
-                  </Button>
-                  <Fade in={edit}>
-                    <Button type="submit">Save</Button>
-                  </Fade>
-                </div>
               </Form>
             </Col>
             <Col>
@@ -179,7 +200,7 @@ const Profile = location => {
                   <Form.Text>Credit</Form.Text>
                   <Form.Control
                     type="number"
-                    disabled={true}
+                    readOnly={true}
                     value={user.credit}
                   />
                 </Form.Group>
@@ -187,7 +208,7 @@ const Profile = location => {
                   <Form.Text>Bonus Tertahan</Form.Text>
                   <Form.Control
                     type="number"
-                    disabled={true}
+                    readOnly={true}
                     value={user.bonus}
                   />
                 </Form.Group>
@@ -195,7 +216,7 @@ const Profile = location => {
                   <Form.Text>Outstanding Bet</Form.Text>
                   <Form.Control
                     type="number"
-                    disabled={true}
+                    readOnly={true}
                     value={user.outstandingBet}
                   />
                 </Form.Group>
@@ -232,7 +253,7 @@ const Profile = location => {
                 <Form.Group>
                   <Form.Text>Referral Upline</Form.Text>
                   <Form.Control
-                    disabled={true}
+                    readOnly={true}
                     value={user.referral}
                   ></Form.Control>
                 </Form.Group>
@@ -240,8 +261,8 @@ const Profile = location => {
                   <Form.Text>Link Referral Saya</Form.Text>
                   <InputGroup>
                     <FormControl
-                      ref={target}
-                      disabled={true}
+                      ref={tooltipTarget}
+                      readOnly={true}
                       style={{
                         borderTopRightRadius: "0",
                         borderBottomRightRadius: "0",
@@ -272,7 +293,11 @@ const Profile = location => {
                       </Button>
                     </InputGroup.Append>
                   </InputGroup>
-                  <Overlay target={target.current} placement="left" show={show}>
+                  <Overlay
+                    target={tooltipTarget.current}
+                    placement="left"
+                    show={show}
+                  >
                     {props => <Tooltip {...props}>Copied!</Tooltip>}
                   </Overlay>
                 </Form.Group>
