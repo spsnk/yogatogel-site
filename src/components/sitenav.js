@@ -1,7 +1,7 @@
-import { Link, navigate } from "gatsby"
+import { globalHistory } from "@reach/router"
+import { Link } from "gatsby"
 import React, { useState } from "react"
 import { Col, Collapse, ListGroup } from "react-bootstrap"
-import { globalHistory } from "@reach/router"
 
 const Sitenav = ({ children }) => {
   const { location } = globalHistory
@@ -9,6 +9,9 @@ const Sitenav = ({ children }) => {
   keys = keys.map(k => (k.length > 0 ? k : "home"))
   const [account, setAccount] = useState(
     keys.length > 1 && keys[1] === "account" ? true : false
+  )
+  const [play, setPlay] = useState(
+    keys.length > 1 && keys[1] === "play" ? true : false
   )
   const menu = (
     <Col xs="auto" className="pl-0">
@@ -28,10 +31,10 @@ const Sitenav = ({ children }) => {
             eventKey={"account"}
             onClick={() => {
               setAccount(!account)
-              navigate("/account/")
             }}
-            className="submenu"
+            className={"submenu " + (account && "active")}
           >
+            <span />
             Account
           </ListGroup.Item>
           <Collapse in={account}>
@@ -44,7 +47,12 @@ const Sitenav = ({ children }) => {
               >
                 Login
               </ListGroup.Item>
-              <ListGroup.Item action as={Link} eventKey={"home"} to="/account/">
+              <ListGroup.Item
+                action
+                as={Link}
+                eventKey={"profile"}
+                to="/account/profile"
+              >
                 Profile
               </ListGroup.Item>
               <ListGroup.Item
@@ -63,11 +71,53 @@ const Sitenav = ({ children }) => {
               >
                 Recover Password
               </ListGroup.Item>
+              <ListGroup.Item action eventKey={"operations"}>
+                Deposit/Withdraw
+              </ListGroup.Item>
             </ListGroup>
           </Collapse>
           <ListGroup.Item action>Promo</ListGroup.Item>
           <ListGroup.Item action>News</ListGroup.Item>
-          <ListGroup.Item action>Play</ListGroup.Item>
+          <ListGroup.Item
+            action
+            eventKey={"play"}
+            onClick={() => setPlay(!play)}
+            className={"submenu " + (play && "active")}
+          >
+            <span />
+            Play
+          </ListGroup.Item>
+          <Collapse in={play}>
+            <ListGroup activeKey={keys[2]}>
+              <ListGroup.Item action as={Link} eventKey={"4d"} to="/play/4d">
+                4D
+              </ListGroup.Item>
+              <ListGroup.Item
+                action
+                as={Link}
+                eventKey={"2d-front"}
+                to="/play/2d-front"
+              >
+                2D DEPAN
+              </ListGroup.Item>
+              <ListGroup.Item
+                action
+                as={Link}
+                eventKey={"2d-middle"}
+                to="/play/2d-middle"
+              >
+                2D Tengah
+              </ListGroup.Item>
+              <ListGroup.Item
+                action
+                as={Link}
+                eventKey={"free"}
+                to="/play/free"
+              >
+                Colok Bebas
+              </ListGroup.Item>
+            </ListGroup>
+          </Collapse>
           <ListGroup.Item action eventKey={"paito"} as={Link} to="/paito">
             Paito
           </ListGroup.Item>
