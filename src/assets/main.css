@@ -29,6 +29,10 @@ form button {
   margin: 0.2em;
 }
 
+.bg-warning {
+  background-color: #e7bb64 !important;
+}
+
 form input,
 form select,
 form .form-control,
@@ -39,7 +43,7 @@ form .custom-select {
 }
 
 .form-register button {
-  background-color: #f1cb82;
+  background-color: #e7bb64;
 }
 
 option[disabled] {
@@ -299,4 +303,18 @@ input[type="number"]::-webkit-outer-spin-button {
 .betTable input,
 .betTable select {
   border-radius: 4px;
+}
+
+.betTable thead,
+.betTable tfoot {
+  background-color: #0e305d;
+}
+
+.betTable .table-dark:hover,
+.betTable .table-dark:hover {
+  background-color: #6499da;
+}
+
+.form-control {
+  color: inherit;
 }

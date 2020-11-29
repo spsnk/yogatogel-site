@@ -6,6 +6,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import React, { useState } from "react"
 import { Button, Form, Table } from "react-bootstrap"
+import { findPermutations } from "src/util/functions"
 
 const Xd = () => {
   const markets = {
@@ -32,15 +33,14 @@ const Xd = () => {
   }
   const default_bet = {
     market: -1,
-    number: false,
-    fourd: false,
-    threed: false,
-    twod: false,
+    number: "",
+    fourd: "",
+    threed: "",
+    twod: "",
     discount: 0,
-    total: 0,
     fee: 0,
+    total: 0,
     totalS: 0,
-    bb: false,
   }
   const [bets, setBets] = useState([{ ...default_bet }])
 
@@ -59,9 +59,9 @@ const Xd = () => {
   const addBet = () => {
     let bet = { ...default_bet }
     if (bets.length > 0) {
-      bet.fourd = auto.auto4d ? bets[bets.length - 1].fourd : false
-      bet.threed = auto.auto3d ? bets[bets.length - 1].threed : false
-      bet.twod = auto.auto2d ? bets[bets.length - 1].twod : false
+      bet.fourd = auto.auto4d ? bets[bets.length - 1].fourd : ""
+      bet.threed = auto.auto3d ? bets[bets.length - 1].threed : ""
+      bet.twod = auto.auto2d ? bets[bets.length - 1].twod : ""
       bet.market =
         auto.auto4d || auto.auto3d || auto.auto2d
           ? bets[bets.length - 1].market
@@ -70,13 +70,26 @@ const Xd = () => {
     setBets([...bets, bet])
   }
   const delBet = index => {
-    if (bets.length > 1) {
-      let items = Array.from(bets)
+    let items = Array.from(bets)
+    if (items.length > 1) {
       if (index > -1) {
         items.splice(index, 1)
-        setBets(items)
       }
+    } else {
+      items = [{ ...default_bet }]
     }
+    updateTotal(items)
+    setBets(items)
+  }
+
+  const updateTotal = items => {
+    setTheTotal(
+      items
+        .map(it => it.total)
+        .reduce((prev, curr) => prev + curr)
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    )
   }
   const updateBet = e => {
     let data = e.target.dataset
@@ -90,6 +103,7 @@ const Xd = () => {
     } else {
       item[field] = value
     }
+
     let fod =
       isNaN(parseInt(item.fourd)) || !item.number || item.number.length < 4
         ? 0
@@ -112,7 +126,7 @@ const Xd = () => {
     }
 
     let discount = Math.round(pretotal * (discount_percent / 100))
-    let fee = pretotal * (fee_percent / 100)
+    let fee = Math.round(pretotal * (fee_percent / 100))
     let total = pretotal - discount + fee
 
     item.discount = discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -121,13 +135,23 @@ const Xd = () => {
     item.totalS = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 
     items[id] = item
-    setTheTotal(
-      items
-        .map(it => it.total)
-        .reduce((prev, curr) => prev + curr)
-        .toString()
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-    )
+    updateTotal(items)
+    setBets(items)
+  }
+
+  const addBB = e => {
+    let id = e.currentTarget.dataset.bet
+    let bet_number = bets[id].number
+    let combinations = findPermutations(bet_number)
+    let items = [...bets]
+    combinations.forEach(number => {
+      if (bet_number !== number) {
+        let bet = { ...bets[id] }
+        bet.number = number
+        items.push(bet)
+      }
+    })
+    updateTotal(items)
     setBets(items)
   }
 
@@ -175,7 +199,7 @@ const Xd = () => {
       <th>Discount</th>
       <th>Kei</th>
       <th>
-        <Form.Text>
+        <Form.Text className="bg-warning text-dark text-center">
           Total: <strong>{theTotal}</strong>
         </Form.Text>
         Bayar:
@@ -192,8 +216,8 @@ const Xd = () => {
   return (
     <>
       <Form inline>
-        <Table striped hover className="betTable" size="sm">
-          <thead>{table_info()}</thead>
+        <Table striped hover responsive className="betTable" size="sm">
+          <thead className="table-dark">{table_info()}</thead>
           <tbody>
             {bets.map((bet, index) => (
               <tr key={`bet-${index}`}>
@@ -301,7 +325,13 @@ const Xd = () => {
                   />
                 </td>
                 <td>
-                  <Button variant="warning" style={{ width: "auto" }}>
+                  <Button
+                    variant="warning"
+                    style={{ width: "auto" }}
+                    data-bet={index}
+                    onClick={addBB}
+                    disabled={!bet.number || bet.number.length < 2}
+                  >
                     <FontAwesomeIcon icon={faExpandArrowsAlt} />
                   </Button>
                 </td>
@@ -318,7 +348,7 @@ const Xd = () => {
               </tr>
             ))}
           </tbody>
-          <tfoot>{table_info()}</tfoot>
+          <tfoot className="table-dark">{table_info()}</tfoot>
         </Table>
       </Form>
     </>
