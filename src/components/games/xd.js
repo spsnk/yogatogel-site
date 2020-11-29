@@ -58,7 +58,7 @@ const Xd = () => {
 
   const addBet = () => {
     let bet = { ...default_bet }
-    if (bets.length > 1) {
+    if (bets.length > 0) {
       bet.fourd = auto.auto4d ? bets[bets.length - 1].fourd : false
       bet.threed = auto.auto3d ? bets[bets.length - 1].threed : false
       bet.twod = auto.auto2d ? bets[bets.length - 1].twod : false
