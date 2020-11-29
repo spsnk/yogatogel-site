@@ -35,7 +35,7 @@ form .form-control,
 form .custom-select {
   max-width: 250px;
   border-radius: 20px;
-  margin-right: 1rem;
+  /* margin-right: 1rem; */
 }
 
 .form-register button {
@@ -280,4 +280,23 @@ footer {
 
 .btn-primary {
   background-color: #0e305d;
+}
+
+.btn-warning {
+  background-color: #f1cb82;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.betTable > tbody > tr > td {
+  vertical-align: middle;
+}
+
+.betTable input,
+.betTable select {
+  border-radius: 4px;
 }

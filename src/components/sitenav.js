@@ -99,7 +99,7 @@ const Sitenav = () => {
                 to="/games/xd"
                 state={{ game: "Xd" }}
               >
-                4D
+                4D, 3D, 2D
               </ListGroup.Item>
               <ListGroup.Item
                 action
