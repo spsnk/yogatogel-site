@@ -85,7 +85,7 @@ const Xd = () => {
     let field = data.field
     let items = Array.from(bets)
     let item = items[id]
-    if (field == "number" && value && value.length > 4) {
+    if (field === "number" && value && value.length > 4) {
       item.number = value.slice(0, 4)
     } else {
       item[field] = value
