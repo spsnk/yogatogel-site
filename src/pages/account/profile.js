@@ -17,7 +17,6 @@ import {
   Tooltip,
 } from "react-bootstrap"
 import SEO from "src/components/seo"
-import Sitenav from "src/components/sitenav"
 
 const Profile = location => {
   const data = useStaticQuery(graphql`
@@ -61,7 +60,6 @@ const Profile = location => {
     <>
       <SEO title="User Profile" />
       <Row>
-        <Sitenav />
         <Col>
           <Row as="header">
             <Col>

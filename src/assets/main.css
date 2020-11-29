@@ -118,13 +118,15 @@ footer {
 }
 
 .list-group-item {
-  border-left: 1px solid transparent;
-  border-right: 1px solid transparent;
-  border-top: 1px solid transparent;
-  border-bottom: 1px solid #0e305d;
+  border-left-color: transparent !important;
+  border-right-color: transparent !important;
+  border-top-color: transparent !important;
+  border-bottom-color: #0e305d !important;
   color: #0e305d;
   font-weight: bold;
   letter-spacing: -1px;
+  margin: 0 !important;
+  border-width: 1px !important;
 }
 
 .list-group-item.active {

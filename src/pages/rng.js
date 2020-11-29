@@ -1,7 +1,6 @@
 import React, { useState } from "react"
 import { Badge, Button, Col, Form, Row, Table } from "react-bootstrap"
 import SEO from "src/components/seo"
-import Sitenav from "src/components/sitenav"
 
 export default function Rng() {
   const [values, setValues] = useState({
@@ -70,7 +69,6 @@ export default function Rng() {
     <>
       <SEO title="Draw Test" />
       <Row>
-        <Sitenav activeKey="notrng" />
         <Col className="pt-5">
           <Form onSubmit={randomize}>
             <Form.Row>

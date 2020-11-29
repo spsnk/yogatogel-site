@@ -8,10 +8,11 @@
 import "bootstrap/dist/css/bootstrap.min.css"
 import { graphql, useStaticQuery } from "gatsby"
 import React from "react"
-import { Container } from "react-bootstrap"
+import { Col, Container, Row } from "react-bootstrap"
 import Footer from "./footer"
 import Nav from "./navbar"
 import CustomTicker from "./ticker"
+import Sitenav from "./sitenav"
 
 const Layout = ({ children, location }) => {
   const data = useStaticQuery(graphql`
@@ -32,7 +33,10 @@ const Layout = ({ children, location }) => {
           <CustomTicker />
         </Container>
         <Container fluid id="content">
-          {children}
+          <Row>
+            <Sitenav />
+            <Col>{children}</Col>
+          </Row>
         </Container>
         <Footer />
       </Container>
