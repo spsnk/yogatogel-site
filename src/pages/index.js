@@ -34,13 +34,29 @@ export default function Home() {
     <>
       <SEO title="Home" />
       <Row>
-        <Col as="section" style={{ maxWidth: "75vw", marginLeft: "auto" }}>
+        <Col as="section">
           <Carousel id="index-carousel">
-            <Carousel.Item key="slide-1">
-              <Img fluid={data.bg1.childImageSharp.fluid} />
+            <Carousel.Item
+              key="slide-1"
+              style={{
+                maxHeight: "calc(100vh - (103px + 36px + 72px))",
+              }}
+            >
+              <Img
+                fluid={data.bg1.childImageSharp.fluid}
+                style={{ maxHeight: "calc(100vh - (103px + 36px + 72px))" }}
+              />
             </Carousel.Item>
-            <Carousel.Item key="slide-2">
-              <Img fluid={data.bg2.childImageSharp.fluid} />
+            <Carousel.Item
+              key="slide-2"
+              style={{
+                maxHeight: "calc(100vh - (103px + 36px + 72px))",
+              }}
+            >
+              <Img
+                fluid={data.bg2.childImageSharp.fluid}
+                style={{ maxHeight: "calc(100vh - (103px + 36px + 72px))" }}
+              />
             </Carousel.Item>
           </Carousel>
         </Col>

@@ -1,6 +1,6 @@
 export const findPermutations = string => {
   if (!string || typeof string !== "string") {
-    return "Please enter a string"
+    return ""
   } else if (string.length < 2) {
     return string
   }

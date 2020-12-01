@@ -42,8 +42,9 @@ form .custom-select {
   /* margin-right: 1rem; */
 }
 
-.form-register button {
+.register-button {
   background-color: #e7bb64;
+  animation: flash 0.9s ease-out infinite;
 }
 
 option[disabled] {
@@ -69,9 +70,9 @@ h5 {
   background-color: #946d24;
 }
 
-.navmenu {
+/* .navmenu {
   margin-bottom: 1rem;
-}
+} */
 
 footer {
   position: absolute;
@@ -107,8 +108,9 @@ footer {
   color: #fff;
 }
 
-#content {
-  padding-bottom: calc(72px + 1em);
+.content {
+  min-height: calc(100vh - (103px + 36px + 72px));
+  padding-bottom: 72px;
 }
 
 .register-button {
@@ -157,10 +159,10 @@ footer {
   top: 50%;
   transform: translateY(-50%);
 }
-
+/* 
 .ticker__container {
   margin-top: 1em;
-}
+} */
 
 .ticker__container .row {
   height: 3em;
@@ -174,14 +176,14 @@ footer {
   font-weight: bolder;
   display: inline-flex;
   text-align: center;
-  max-width: 7em;
+  max-width: 10em;
 }
 
 .ticker__title::after {
   position: absolute;
   z-index: -1;
   content: "";
-  right: -2em;
+  right: -1em;
   top: 0;
   height: 100%;
   width: 100%;
@@ -190,10 +192,6 @@ footer {
   -moz-transform: skewX(-10deg) translateX(-15px);
   -ms-transform: skewX(-10deg) translateX(-15px);
   transform: skewX(-10deg) translateX(-15px);
-}
-
-.sitenav {
-  width: 15em;
 }
 
 .list-group > .list-group .list-group-item {
@@ -305,16 +303,48 @@ input[type="number"]::-webkit-outer-spin-button {
   border-radius: 4px;
 }
 
+.betPanel input {
+  padding: 0.15rem;
+  width: 3rem;
+  height: 2rem;
+}
+
 .betTable thead,
-.betTable tfoot {
+.betTable tfoot,
+.betTable select {
   background-color: #0e305d;
 }
 
-.betTable .table-dark:hover,
 .betTable .table-dark:hover {
-  background-color: #6499da;
+  background-color: #0e305d;
+}
+
+.betTable select,
+.betTable input[type="checkbox"],
+.betTable .custom-control-label {
+  cursor: pointer;
+}
+
+.betTable .table-dark tr:hover {
+  background-color: inherit;
 }
 
 .form-control {
   color: inherit;
+}
+
+@keyframes flash {
+  0% {
+    text-shadow: 0px 0px 5px #fff, 0px 0px 5px #fff, 0px 0px 5px #fff,
+      0px 0px 5px #fff, 0px 0px 5px #fff, 0px 0px 5px #fff, 0px 0px 5px #fff,
+      0px 0px 25px #fff, 0px 0px 5px #fff, 0px 0px 5px #fff, 0px 0px 5px #7b96b8,
+      0px 0px 5px #7b96b8, 0px 10px 5px #ffffe8, 0px 10px 50px #ffffe8,
+      0px 10px 100px #e4be0d, 0px 10px 100px #e4be0d, 0px -10px 100px #e4be0d,
+      0px -10px 100px #e4be0d;
+    color: #ffe674;
+  }
+}
+
+.custom-control-inline {
+  margin-right: 0;
 }

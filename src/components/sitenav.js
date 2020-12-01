@@ -1,7 +1,7 @@
 import { globalHistory } from "@reach/router"
 import { Link } from "gatsby"
 import React, { useState } from "react"
-import { Button, Col, Collapse, ListGroup } from "react-bootstrap"
+import { Button, Collapse, ListGroup } from "react-bootstrap"
 
 const Sitenav = () => {
   const { location } = globalHistory
@@ -14,7 +14,7 @@ const Sitenav = () => {
     keys.length > 1 && keys[1] === "games" ? true : false
   )
   const menu = (
-    <Col xs="auto" className="pl-0">
+    <>
       <aside className="text-center">
         <ListGroup
           activeKey={keys[1]}
@@ -145,7 +145,7 @@ const Sitenav = () => {
           DAFTAR
         </Button>
       </aside>
-    </Col>
+    </>
   )
   return menu
 }

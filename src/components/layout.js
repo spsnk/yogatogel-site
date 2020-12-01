@@ -14,7 +14,7 @@ import Nav from "./navbar"
 import CustomTicker from "./ticker"
 import Sitenav from "./sitenav"
 
-const Layout = ({ children, location }) => {
+const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -29,15 +29,15 @@ const Layout = ({ children, location }) => {
     <>
       <Container as="main" fluid>
         <Nav siteTitle={data.site.siteMetadata.title} />
-        <Container fluid className="ticker__container">
-          <CustomTicker />
-        </Container>
-        <Container fluid id="content">
-          <Row>
+        <CustomTicker />
+        <Row className="content">
+          <Col md="3" lg="2" xg="1">
             <Sitenav />
-            <Col>{children}</Col>
-          </Row>
-        </Container>
+          </Col>
+          <Col md="9" lg="10" xg="11">
+            {children}
+          </Col>
+        </Row>
         <Footer />
       </Container>
     </>

@@ -1,3 +1,5 @@
+import { faBullhorn } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import React, { useState } from "react"
 import { Col, Row } from "react-bootstrap"
 import PageVisibility from "react-page-visibility"
@@ -11,11 +13,13 @@ const CustomTicker = () => {
   }
 
   return (
-    <Row>
+    <Row className="ticker__container">
       <Col md="auto" className="ticker__title">
-        <p className="my-auto text-nowrap">INFO TERKINI</p>
+        <p className="my-auto ">
+          <FontAwesomeIcon icon={faBullhorn} /> INFO TERKINI
+        </p>
       </Col>
-      <Col>
+      <Col className="p-0">
         <PageVisibility onChange={handleVisibilityChange}>
           {pageIsVisible && (
             <Ticker>

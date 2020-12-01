@@ -142,10 +142,9 @@ const Profile = location => {
                   </select>
                   <Form.Control
                     type="text"
-                    readOnly={!edit}
-                    defaultValue={user.bank}
                     value={bank}
-                    hidden={true}
+                    readOnly
+                    hidden={false}
                   />
                 </Form.Group>
                 <Form.Group controlId="userinfo-bankAccount">
