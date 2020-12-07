@@ -329,7 +329,7 @@ input[type="number"]::-webkit-outer-spin-button {
   background-color: inherit;
 }
 
-.form-control {
+.inherit {
   color: inherit;
 }
 

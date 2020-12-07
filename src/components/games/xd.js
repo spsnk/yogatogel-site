@@ -1,8 +1,4 @@
-import {
-  faExpandArrowsAlt,
-  faPlus,
-  faTrashAlt,
-} from "@fortawesome/free-solid-svg-icons"
+import { faPlus, faTrashAlt } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import React, { useState } from "react"
 import { Button, Col, Form, Row, Table } from "react-bootstrap"
@@ -96,19 +92,21 @@ const Xd = () => {
     d4: "",
     d3: "",
     d2: "",
+    bb: false,
   }
 
   const [game_bets, setGameBets] = useState([{ ...default_game_bet }])
   const [bets, setBets] = useState([])
 
   const [auto, setAuto] = useState({
-    auto4d: false,
-    auto3d: false,
-    auto2d: false,
+    auto4d: "",
+    auto3d: "",
+    auto2d: "",
   })
-  const manageAuto = e => {
-    let game = e.target.dataset.game
-    setAuto({ ...auto, [game]: !auto[game] })
+  const manageAuto = ({ target }) => {
+    let game = target.dataset.game
+    let value = target.value
+    setAuto({ ...auto, [game]: value })
   }
   const [market, setMarket] = useState(-1)
 
@@ -116,11 +114,9 @@ const Xd = () => {
 
   const addBet = () => {
     let bet = { ...default_game_bet }
-    if (game_bets.length > 0) {
-      bet.d4 = auto.auto4d ? game_bets[game_bets.length - 1].d4 : ""
-      bet.d3 = auto.auto3d ? game_bets[game_bets.length - 1].d3 : ""
-      bet.d2 = auto.auto2d ? game_bets[game_bets.length - 1].d2 : ""
-    }
+    bet.d4 = isNaN(parseInt(auto.auto4d)) ? "" : auto.auto4d
+    bet.d3 = isNaN(parseInt(auto.auto3d)) ? "" : auto.auto3d
+    bet.d2 = isNaN(parseInt(auto.auto2d)) ? "" : auto.auto2d
     setGameBets([...game_bets, bet])
   }
   const delBet = index => {
@@ -142,34 +138,52 @@ const Xd = () => {
     getBets(items)
   }
 
-  const updateBet = e => {
-    let data = e.target.dataset
-    let value = e.target.value
-    let id = data.bet
-    let field = data.field
-    let items = Array.from(game_bets)
-    let item = items[id]
+  const updateBet = async ({ target }) => {
+    const data = target.dataset
+    let value = target.type === "checkbox" ? target.checked : target.value
+    const id = data.bet
+    const field = data.field
+    const items = Array.from(game_bets)
+    const item = items[id]
     if (field === "number" && value.length > 4) {
       value = value.slice(0, 4)
     }
     item[field] = value
+
+    if (!isNaN(parseInt(auto.auto4d))) {
+      item.d4 = auto.auto4d
+    }
+    if (!isNaN(parseInt(auto.auto3d))) {
+      item.d3 = auto.auto3d
+    }
+    if (!isNaN(parseInt(auto.auto2d))) {
+      item.d2 = auto.auto2d
+    }
+
     items[id] = calculateTotal(item)
 
+    // console.log(items)
     getBets(items)
     setGameBets(items)
   }
 
   const getBets = (actual_bets, the_market) => {
     if (market !== -1 || the_market !== undefined) {
-      let items = []
+      let tickets = []
       let this_market = markets[the_market !== undefined ? the_market : market]
       let this_games = this_market.games
       let d4 = this_games.d4
       let d3 = this_games.d3
       let d2 = this_games.d2
-      let already_used = []
       let the_actual_total = 0
       actual_bets.forEach(b => {
+        let ticket = {
+          number: b.number,
+          bets: [],
+          total: 0,
+          totalBets: 0,
+          bb: b.bb,
+        }
         if (
           d4 !== undefined &&
           b.number.length > 3 &&
@@ -177,25 +191,30 @@ const Xd = () => {
           b.d4 > 0
         ) {
           let number = b.number
-          if (!already_used.includes(number)) {
-            let amount = parseInt(b.d4)
-            let pretotal = amount * 1000
-            let discount = Math.round(pretotal * (d4.discount / 100))
-            let fee = Math.round(pretotal * (d4.fee / 100))
-            let total = pretotal - discount + fee
-            let bet = {
-              game_id: d4.game_id,
-              game: "4d",
-              number: number,
-              amount: amount,
-              pretotal: pretotal,
-              discount: discount,
-              fee: fee,
-              total: total,
-            }
-            the_actual_total += total
-            items.push(bet)
-            already_used.push(number)
+          let amount = parseInt(b.d4)
+          let pretotal = amount * 1000
+          let discount = Math.round(pretotal * (d4.discount / 100))
+          let fee = Math.round(pretotal * (d4.fee / 100))
+          let total = pretotal - discount + fee
+          let bet = {
+            game_id: d4.game_id,
+            game: "4d",
+            number: number,
+            amount: amount,
+            pretotal: pretotal,
+            discount: discount,
+            fee: fee,
+            total: total,
+          }
+          if (b.bb) {
+            let _bbets = getBB(bet)
+            _bbets.forEach(bb => {
+              ticket.bets.push(bb)
+            })
+            ticket.total += bet.total * _bbets.length
+          } else {
+            ticket.bets.push(bet)
+            ticket.total += total
           }
         }
         if (
@@ -205,25 +224,30 @@ const Xd = () => {
           b.d3 > 0
         ) {
           let number = b.number.slice(b.number.length - 3)
-          if (!already_used.includes(number)) {
-            let amount = parseInt(b.d3)
-            let pretotal = amount * 1000
-            let discount = Math.round(pretotal * (d3.discount / 100))
-            let fee = Math.round(pretotal * (d3.fee / 100))
-            let total = pretotal - discount + fee
-            let bet = {
-              game_id: d3.game_id,
-              game: "3d",
-              number: number,
-              amount: amount,
-              pretotal: pretotal,
-              discount: discount,
-              fee: fee,
-              total: total,
-            }
-            the_actual_total += total
-            items.push(bet)
-            already_used.push(number)
+          let amount = parseInt(b.d3)
+          let pretotal = amount * 1000
+          let discount = Math.round(pretotal * (d3.discount / 100))
+          let fee = Math.round(pretotal * (d3.fee / 100))
+          let total = pretotal - discount + fee
+          let bet = {
+            game_id: d3.game_id,
+            game: "3d",
+            number: number,
+            amount: amount,
+            pretotal: pretotal,
+            discount: discount,
+            fee: fee,
+            total: total,
+          }
+          if (b.bb) {
+            let _bbets = getBB(bet)
+            _bbets.forEach(bb => {
+              ticket.bets.push(bb)
+            })
+            ticket.total += bet.total * _bbets.length
+          } else {
+            ticket.bets.push(bet)
+            ticket.total += total
           }
         }
         if (
@@ -233,29 +257,36 @@ const Xd = () => {
           b.d2 > 0
         ) {
           let number = b.number.slice(b.number.length - 2)
-          if (!already_used.includes(number)) {
-            let amount = parseInt(b.d2)
-            let pretotal = amount * 1000
-            let discount = Math.round(pretotal * (d2.discount / 100))
-            let fee = Math.round(pretotal * (d2.fee / 100))
-            let total = pretotal - discount + fee
-            let bet = {
-              game_id: d2.game_id,
-              game: "2d",
-              number: number,
-              amount: amount,
-              pretotal: pretotal,
-              discount: discount,
-              fee: fee,
-              total: total,
-            }
-            the_actual_total += total
-            items.push(bet)
-            already_used.push(number)
+          let amount = parseInt(b.d2)
+          let pretotal = amount * 1000
+          let discount = Math.round(pretotal * (d2.discount / 100))
+          let fee = Math.round(pretotal * (d2.fee / 100))
+          let total = pretotal - discount + fee
+          let bet = {
+            game_id: d2.game_id,
+            game: "2d",
+            number: number,
+            amount: amount,
+            pretotal: pretotal,
+            discount: discount,
+            fee: fee,
+            total: total,
+          }
+          if (b.bb) {
+            let _bbets = getBB(bet)
+            _bbets.forEach(bb => {
+              ticket.bets.push(bb)
+            })
+            ticket.total += bet.total * _bbets.length
+          } else {
+            ticket.bets.push(bet)
+            ticket.total += total
           }
         }
+        tickets.push(ticket)
+        the_actual_total += ticket.total
       })
-      setBets(items)
+      setBets(tickets)
       setTheTotal(the_actual_total)
     }
   }
@@ -293,26 +324,22 @@ const Xd = () => {
     return item
   }
 
-  const addBB = e => {
-    let id = e.currentTarget.dataset.bet
-    let bet_number = game_bets[id].number
+  const getBB = bb_bet => {
+    let bet_number = bb_bet.number
     let combinations = findPermutations(bet_number)
-    let items = [...game_bets]
+    let items = []
     combinations.forEach(number => {
-      if (bet_number !== number) {
-        let bet = { ...game_bets[id] }
-        bet.number = number
-        items.push(bet)
-      }
+      let bet = { ...bb_bet }
+      bet.number = number
+      items.push(bet)
     })
-    getBets(items)
-    setGameBets(items)
+    return items
   }
 
   const updateMarket = e => {
     let market_id = e.target.value
     setMarket(market_id)
-    getBets(game_bets, market_id)
+    resetBets()
   }
 
   const table_info = () => (
@@ -321,43 +348,42 @@ const Xd = () => {
       <th>Nomor</th>
       <th>
         <Form.Text>Taruhan 4D</Form.Text>
-        <Form.Check
-          inline
-          label="auto"
-          type="switch"
-          id={Math.random().toString(36).substr(2, 9)}
+        <Form.Control
+          placeholder="auto"
           data-game="auto4d"
-          checked={auto.auto4d}
+          type="number"
+          value={auto.auto4d}
           onChange={manageAuto}
         />
       </th>
       <th>
         <Form.Text>Taruhan 3D</Form.Text>
-        <Form.Check
-          inline
-          label="auto"
-          type="switch"
-          id={Math.random().toString(36).substr(2, 9)}
+        <Form.Control
+          placeholder="auto"
           data-game="auto3d"
-          checked={auto.auto3d}
+          type="number"
+          value={auto.auto3d}
           onChange={manageAuto}
         />
       </th>
       <th>
         <Form.Text>Taruhan 2D</Form.Text>
-        <Form.Check
-          inline
-          label="auto"
-          type="switch"
-          id={Math.random().toString(36).substr(2, 9)}
+        <Form.Control
+          placeholder="auto"
           data-game="auto2d"
-          checked={auto.auto2d}
+          type="number"
+          value={auto.auto2d}
           onChange={manageAuto}
         />
       </th>
       <th>BB</th>
       <th>
-        <Button style={{ width: "auto" }} title="Add Bet" onClick={addBet}>
+        <Button
+          style={{ width: "auto" }}
+          title="Add Bet"
+          onClick={addBet}
+          className="d-md-block d-none"
+        >
           <FontAwesomeIcon icon={faPlus} size="sm" />
         </Button>
       </th>
@@ -397,11 +423,14 @@ const Xd = () => {
                       </Form.Label>
                       <Form.Control
                         as="select"
-                        plaintext
-                        className="form-control betTable"
+                        className="form-control betTable inherit"
                         value={market}
                         onChange={updateMarket}
-                        style={{ fontWeight: "bolder", fontSize: "2em" }}
+                        plaintext
+                        style={{
+                          fontWeight: "bolder",
+                          fontSize: "2em",
+                        }}
                       >
                         <option disabled value={-1}>
                           Select Market
@@ -497,15 +526,14 @@ const Xd = () => {
                     </td>
 
                     <td>
-                      <Button
-                        variant="warning"
-                        style={{ width: "auto" }}
+                      <Form.Check
+                        type="switch"
+                        id={`bb-bet-${index}`}
+                        data-field="bb"
                         data-bet={index}
-                        onClick={addBB}
-                        disabled={!bet.number || bet.number.length < 2}
-                      >
-                        <FontAwesomeIcon icon={faExpandArrowsAlt} size="sm" />
-                      </Button>
+                        checked={bet.bb}
+                        onChange={updateBet}
+                      />
                     </td>
                     <td>
                       <Button
@@ -513,6 +541,7 @@ const Xd = () => {
                         data-bet={index}
                         variant="danger"
                         onClick={() => delBet(index)}
+                        className="d-md-block d-none"
                       >
                         <FontAwesomeIcon icon={faTrashAlt} size="sm" />
                       </Button>
@@ -522,6 +551,136 @@ const Xd = () => {
               </tbody>
               <tfoot className="table-dark">{table_info()}</tfoot>
             </Table>
+          </Form>
+        </Col>
+
+        <Col>
+          <Form inline>
+            <Table
+              striped
+              responsive
+              hover
+              size="sm"
+              className="betTable mt-3 mt-sm-3 mt-md-0"
+            >
+              <thead className="table-dark">
+                <tr>
+                  <th colSpan={3}>
+                    <Form.Label
+                      style={{
+                        fontSize: "1.8em",
+                        margin: "2px 2rem 0 0",
+                        padding: "0.375rem 2px",
+                      }}
+                    >
+                      Hasil Total
+                    </Form.Label>
+                  </th>
+                  <th colSpan={3}>
+                    <Form.Text>
+                      <h6>
+                        Total:{" "}
+                        <strong>
+                          {theTotal
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        </strong>
+                      </h6>
+                    </Form.Text>
+                  </th>
+                </tr>
+              </thead>
+              {bets
+                .filter(t => t.bets.length > 0)
+                .map((ticket, index) => (
+                  <React.Fragment key={`ticket-${index}`}>
+                    <thead className="table-dark">
+                      <tr>
+                        <th colSpan={3}>
+                          <Form.Text>Ticket #{index + 1}</Form.Text>
+                          <Form.Label>
+                            <h5 className="my-1">
+                              Nomor {ticket.number} {ticket.bb ? "+ BB" : ""}
+                            </h5>
+                          </Form.Label>
+                        </th>
+                        <th colSpan={3} className="bg-warning text-dark">
+                          <Form.Text>
+                            <h6>
+                              Ticket Bayar:{" "}
+                              <strong>
+                                {ticket.total
+                                  .toString()
+                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                              </strong>
+                            </h6>
+                          </Form.Text>
+                          <Form.Text>
+                            <h6>
+                              <strong>{ticket.bets.length}</strong> Taruhan
+                            </h6>
+                          </Form.Text>
+                        </th>
+                      </tr>
+                      <tr>
+                        <th>#</th>
+                        <th>Nomor</th>
+                        <th>Bet</th>
+                        <th>Diskon</th>
+                        <th>Bayar:</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {ticket.bets.map((bet, index) => (
+                        <tr key={`res-${index}`}>
+                          <td>
+                            <Form.Control
+                              plaintext={true}
+                              readOnly={true}
+                              value={`${index + 1}.`}
+                              style={{ width: "1rem" }}
+                            />
+                          </td>
+                          <td>
+                            <Form.Control
+                              plaintext={true}
+                              readOnly={true}
+                              value={bet.number}
+                            />
+                          </td>
+                          <td>
+                            <Form.Control
+                              plaintext={true}
+                              readOnly={true}
+                              value={bet.pretotal
+                                .toString()
+                                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                            />
+                          </td>
+                          <td>
+                            <Form.Control
+                              plaintext={true}
+                              readOnly={true}
+                              value={bet.discount
+                                .toString()
+                                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                            />
+                          </td>
+                          <td>
+                            <Form.Control
+                              plaintext={true}
+                              readOnly={true}
+                              value={bet.total
+                                .toString()
+                                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </React.Fragment>
+                ))}
+            </Table>
             <Button variant="warning" className="mx-auto">
               Submit
             </Button>
@@ -529,104 +688,6 @@ const Xd = () => {
               Clear
             </Button>
           </Form>
-        </Col>
-
-        <Col>
-          <Table
-            striped
-            responsive
-            hover
-            size="sm"
-            className="betTable mt-3 mt-sm-3 mt-md-0"
-          >
-            <thead className="table-dark">
-              <tr className="bg-warning text-dark">
-                <th colSpan={7} className="text-center">
-                  <Form.Text>
-                    <h6>
-                      Total:{" "}
-                      <strong>
-                        {theTotal
-                          .toString()
-                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                      </strong>
-                    </h6>
-                  </Form.Text>
-                  <Form.Text>
-                    <h6>
-                      <strong>{bets.length}</strong> Taruhan
-                    </h6>
-                  </Form.Text>
-                </th>
-              </tr>
-              <tr>
-                <th>#</th>
-                <th>Nomor</th>
-                <th>Bet</th>
-                <th>Diskon</th>
-                <th>Kei</th>
-                <th>Bayar:</th>
-              </tr>
-            </thead>
-            <tbody>
-              {bets.map((bet, index) => (
-                <tr key={`res-${index}`}>
-                  <td>
-                    <Form.Control
-                      plaintext={true}
-                      readOnly={true}
-                      value={`${index + 1}.`}
-                      style={{ width: "1rem" }}
-                    />
-                  </td>
-                  <td>
-                    <Form.Control
-                      plaintext={true}
-                      readOnly={true}
-                      value={bet.number}
-                    />
-                  </td>
-                  <td>
-                    <Form.Control
-                      plaintext={true}
-                      readOnly={true}
-                      value={bet.pretotal
-                        .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                    />
-                  </td>
-                  <td>
-                    <Form.Control
-                      plaintext={true}
-                      readOnly={true}
-                      value={bet.discount
-                        .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                    />
-                  </td>
-                  <td>
-                    <Form.Control
-                      plaintext={true}
-                      readOnly={true}
-                      value={bet.fee
-                        .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                    />
-                  </td>
-                  <td>
-                    <Form.Control
-                      plaintext={true}
-                      readOnly={true}
-                      value={bet.total
-                        .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-            <tfoot></tfoot>
-          </Table>
         </Col>
       </Row>
     </>
