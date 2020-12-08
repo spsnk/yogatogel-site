@@ -4,89 +4,7 @@ import React, { useState } from "react"
 import { Button, Col, Form, Row, Table } from "react-bootstrap"
 import { findPermutations } from "src/util/functions"
 
-const Xd = () => {
-  const markets = {
-    0: {
-      name: "Indonesia",
-      games: {
-        d4: {
-          game_id: 234,
-          discount: 10,
-          fee: 3,
-        },
-        d3: {
-          game_id: 2138,
-          discount: 20,
-          fee: 5,
-        },
-        d2: {
-          game_id: 3213,
-          discount: 0,
-          fee: 10,
-        },
-      },
-    },
-    1: {
-      name: "China",
-      games: {
-        d4: {
-          game_id: 234,
-          discount: 10,
-          fee: 3,
-        },
-        d3: {
-          game_id: 2138,
-          discount: 20,
-          fee: 5,
-        },
-        d2: {
-          game_id: 3213,
-          discount: 0,
-          fee: 10,
-        },
-      },
-    },
-    2: {
-      name: "Texas",
-      games: {
-        d4: {
-          game_id: 234,
-          discount: 10,
-          fee: 3,
-        },
-        d3: {
-          game_id: 2138,
-          discount: 20,
-          fee: 5,
-        },
-        d2: {
-          game_id: 3213,
-          discount: 0,
-          fee: 10,
-        },
-      },
-    },
-    3: {
-      name: "Mexico Mega",
-      games: {
-        d4: {
-          game_id: 234,
-          discount: 0,
-          fee: 0,
-        },
-        d3: {
-          game_id: 2138,
-          discount: 0,
-          fee: 0,
-        },
-        d2: {
-          game_id: 3213,
-          discount: 0,
-          fee: 0,
-        },
-      },
-    },
-  }
+const Xd = ({ markets }) => {
   const default_game_bet = {
     number: "",
     d4: "",
@@ -138,7 +56,7 @@ const Xd = () => {
     getBets(items)
   }
 
-  const updateBet = async ({ target }) => {
+  const updateBet = ({ target }) => {
     const data = target.dataset
     let value = target.type === "checkbox" ? target.checked : target.value
     const id = data.bet
@@ -584,7 +502,8 @@ const Xd = () => {
                           {theTotal
                             .toString()
                             .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                        </strong>
+                        </strong>{" "}
+                        IDR
                       </h6>
                     </Form.Text>
                   </th>
@@ -592,12 +511,12 @@ const Xd = () => {
               </thead>
               {bets
                 .filter(t => t.bets.length > 0)
-                .map((ticket, index) => (
-                  <React.Fragment key={`ticket-${index}`}>
+                .map((ticket, idx) => (
+                  <React.Fragment key={`ticket-${idx}`}>
                     <thead className="table-dark">
                       <tr>
                         <th colSpan={3}>
-                          <Form.Text>Ticket #{index + 1}</Form.Text>
+                          <Form.Text>Ticket #{idx + 1}</Form.Text>
                           <Form.Label>
                             <h5 className="my-1">
                               Nomor {ticket.number} {ticket.bb ? "+ BB" : ""}
@@ -612,7 +531,8 @@ const Xd = () => {
                                 {ticket.total
                                   .toString()
                                   .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                              </strong>
+                              </strong>{" "}
+                              IDR
                             </h6>
                           </Form.Text>
                           <Form.Text>
