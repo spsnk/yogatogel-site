@@ -25,12 +25,12 @@ const Sitenav = () => {
           <ListGroup.Item action eventKey={"home"} as={Link} to="/">
             Home
           </ListGroup.Item>
-          <ListGroup.Item action>How to play</ListGroup.Item>
+          {/* <ListGroup.Item action>How to play</ListGroup.Item> */}
           <ListGroup.Item action eventKey={"paito"} as={Link} to="/paito">
             Paito
           </ListGroup.Item>
-          <ListGroup.Item action>Promo</ListGroup.Item>
-          <ListGroup.Item action>News</ListGroup.Item>
+          {/* <ListGroup.Item action>Promo</ListGroup.Item>
+          <ListGroup.Item action>News</ListGroup.Item> */}
           <ListGroup.Item
             action
             eventKey={"account"}
@@ -76,7 +76,12 @@ const Sitenav = () => {
               >
                 Recover Password
               </ListGroup.Item>
-              <ListGroup.Item action eventKey={"operations"}>
+              <ListGroup.Item
+                action
+                as={Link}
+                to="/account/operations"
+                eventKey={"operations"}
+              >
                 Deposit/Withdraw
               </ListGroup.Item>
             </ListGroup>
@@ -130,9 +135,9 @@ const Sitenav = () => {
               </ListGroup.Item>
             </ListGroup>
           </Collapse>
-          <ListGroup.Item action eventKey={"markets"} as={Link} to="/markets">
+          {/* <ListGroup.Item action eventKey={"markets"} as={Link} to="/markets">
             Markets
-          </ListGroup.Item>
+          </ListGroup.Item> */}
           <ListGroup.Item action eventKey={"rng"} as={Link} to="/rng">
             Test Draw
           </ListGroup.Item>
