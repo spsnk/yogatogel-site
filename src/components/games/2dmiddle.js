@@ -2,29 +2,21 @@ import { faPlus, faTrashAlt } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import React, { useState } from "react"
 import { Button, Col, Form, Row, Table } from "react-bootstrap"
-import { findPermutations } from "src/util/functions"
 
-const Xd = ({ markets }) => {
+const Game = ({ markets }) => {
   const default_game_bet = {
     number: "",
-    d4: "",
-    d3: "",
-    d2: "",
+    amount: "",
     bb: false,
   }
 
   const [game_bets, setGameBets] = useState([{ ...default_game_bet }])
   const [bets, setBets] = useState([])
 
-  const [auto, setAuto] = useState({
-    auto4d: "",
-    auto3d: "",
-    auto2d: "",
-  })
+  const [auto, setAuto] = useState("")
   const manageAuto = ({ target }) => {
-    let game = target.dataset.game
     let value = target.value
-    setAuto({ ...auto, [game]: value })
+    setAuto(value)
   }
   const [market, setMarket] = useState(-1)
 
@@ -32,9 +24,7 @@ const Xd = ({ markets }) => {
 
   const addBet = () => {
     let bet = { ...default_game_bet }
-    bet.d4 = isNaN(parseInt(auto.auto4d)) ? "" : auto.auto4d
-    bet.d3 = isNaN(parseInt(auto.auto3d)) ? "" : auto.auto3d
-    bet.d2 = isNaN(parseInt(auto.auto2d)) ? "" : auto.auto2d
+    bet.amount = isNaN(parseInt(auto)) ? "" : auto
     setGameBets([...game_bets, bet])
   }
   const delBet = index => {
@@ -63,24 +53,16 @@ const Xd = ({ markets }) => {
     const field = data.field
     const items = Array.from(game_bets)
     const item = items[id]
-    if (field === "number" && value.length > 4) {
-      value = value.slice(0, 4)
+    if (field === "number" && value.length > 2) {
+      value = value.slice(0, 2)
     }
     item[field] = value
 
-    if (!isNaN(parseInt(auto.auto4d))) {
-      item.d4 = auto.auto4d
-    }
-    if (!isNaN(parseInt(auto.auto3d))) {
-      item.d3 = auto.auto3d
-    }
-    if (!isNaN(parseInt(auto.auto2d))) {
-      item.d2 = auto.auto2d
+    if (!isNaN(parseInt(auto))) {
+      item.amount = auto
     }
 
     items[id] = calculateTotal(item)
-
-    // console.log(items)
     getBets(items)
     setGameBets(items)
   }
@@ -90,9 +72,7 @@ const Xd = ({ markets }) => {
       let tickets = []
       let this_market = markets[the_market !== undefined ? the_market : market]
       let this_games = this_market.games
-      let d4 = this_games.d4
-      let d3 = this_games.d3
-      let d2 = this_games.d2
+      let game = this_games.d2m
       let the_actual_total = 0
       actual_bets.forEach(b => {
         let ticket = {
@@ -100,23 +80,22 @@ const Xd = ({ markets }) => {
           bets: [],
           total: 0,
           totalBets: 0,
-          bb: b.bb,
         }
         if (
-          d4 !== undefined &&
-          b.number.length > 3 &&
-          !isNaN(parseInt(b.d4)) &&
-          b.d4 > 0
+          b.amount !== undefined &&
+          b.number.length === 2 &&
+          !isNaN(parseInt(b.amount)) &&
+          b.amount > 0
         ) {
           let number = b.number
-          let amount = parseInt(b.d4)
+          let amount = parseInt(b.amount)
           let pretotal = amount * 1000
-          let discount = Math.round(pretotal * (d4.discount / 100))
-          let fee = Math.round(pretotal * (d4.fee / 100))
+          let discount = Math.round(pretotal * (game.discount / 100))
+          let fee = Math.round(pretotal * (game.fee / 100))
           let total = pretotal - discount + fee
           let bet = {
-            game_id: d4.game_id,
-            game: "4d",
+            game_id: game.game_id,
+            game: "2dtengah",
             number: number,
             amount: amount,
             pretotal: pretotal,
@@ -124,82 +103,8 @@ const Xd = ({ markets }) => {
             fee: fee,
             total: total,
           }
-          if (b.bb) {
-            let _bbets = getBB(bet)
-            _bbets.forEach(bb => {
-              ticket.bets.push(bb)
-            })
-            ticket.total += bet.total * _bbets.length
-          } else {
-            ticket.bets.push(bet)
-            ticket.total += total
-          }
-        }
-        if (
-          d3 !== undefined &&
-          b.number.length > 2 &&
-          !isNaN(parseInt(b.d3)) &&
-          b.d3 > 0
-        ) {
-          let number = b.number.slice(b.number.length - 3)
-          let amount = parseInt(b.d3)
-          let pretotal = amount * 1000
-          let discount = Math.round(pretotal * (d3.discount / 100))
-          let fee = Math.round(pretotal * (d3.fee / 100))
-          let total = pretotal - discount + fee
-          let bet = {
-            game_id: d3.game_id,
-            game: "3d",
-            number: number,
-            amount: amount,
-            pretotal: pretotal,
-            discount: discount,
-            fee: fee,
-            total: total,
-          }
-          if (b.bb) {
-            let _bbets = getBB(bet)
-            _bbets.forEach(bb => {
-              ticket.bets.push(bb)
-            })
-            ticket.total += bet.total * _bbets.length
-          } else {
-            ticket.bets.push(bet)
-            ticket.total += total
-          }
-        }
-        if (
-          d2 !== undefined &&
-          b.number.length > 1 &&
-          !isNaN(parseInt(b.d2)) &&
-          b.d2 > 0
-        ) {
-          let number = b.number.slice(b.number.length - 2)
-          let amount = parseInt(b.d2)
-          let pretotal = amount * 1000
-          let discount = Math.round(pretotal * (d2.discount / 100))
-          let fee = Math.round(pretotal * (d2.fee / 100))
-          let total = pretotal - discount + fee
-          let bet = {
-            game_id: d2.game_id,
-            game: "2d",
-            number: number,
-            amount: amount,
-            pretotal: pretotal,
-            discount: discount,
-            fee: fee,
-            total: total,
-          }
-          if (b.bb) {
-            let _bbets = getBB(bet)
-            _bbets.forEach(bb => {
-              ticket.bets.push(bb)
-            })
-            ticket.total += bet.total * _bbets.length
-          } else {
-            ticket.bets.push(bet)
-            ticket.total += total
-          }
+          ticket.bets.push(bet)
+          ticket.total += total
         }
         tickets.push(ticket)
         the_actual_total += ticket.total
@@ -210,18 +115,10 @@ const Xd = ({ markets }) => {
   }
 
   const calculateTotal = item => {
-    let fod =
-      isNaN(parseInt(item.d4)) || !item.number || item.number.length < 4
+    let amount =
+      isNaN(parseInt(item.amount)) || !item.number || item.number.length < 2
         ? 0
-        : parseInt(item.d4)
-    let thd =
-      isNaN(parseInt(item.d3)) || !item.number || item.number.length < 3
-        ? 0
-        : parseInt(item.d3)
-    let twd =
-      isNaN(parseInt(item.d2)) || !item.number || item.number.length < 2
-        ? 0
-        : parseInt(item.d2)
+        : parseInt(item.amount)
 
     let discount_percent = 0
     let fee_percent = 0
@@ -230,7 +127,7 @@ const Xd = ({ markets }) => {
       fee_percent = markets[market].fee
     }
 
-    let pretotal = fod * 1000 + thd * 1000 + twd * 1000
+    let pretotal = amount * 1000
 
     let discount = Math.round(pretotal * (discount_percent / 100))
     let fee = Math.round(pretotal * (fee_percent / 100))
@@ -240,18 +137,6 @@ const Xd = ({ markets }) => {
     item.fee = fee
     item.total = total
     return item
-  }
-
-  const getBB = bb_bet => {
-    let bet_number = bb_bet.number
-    let combinations = findPermutations(bet_number)
-    let items = []
-    combinations.forEach(number => {
-      let bet = { ...bb_bet }
-      bet.number = number
-      items.push(bet)
-    })
-    return items
   }
 
   const updateMarket = e => {
@@ -265,36 +150,14 @@ const Xd = ({ markets }) => {
       <th>#</th>
       <th>Nomor</th>
       <th>
-        <Form.Text>Taruhan 4D</Form.Text>
+        <Form.Text>Taruhan</Form.Text>
         <Form.Control
           placeholder="auto"
-          data-game="auto4d"
           type="number"
-          value={auto.auto4d}
+          value={auto}
           onChange={manageAuto}
         />
       </th>
-      <th>
-        <Form.Text>Taruhan 3D</Form.Text>
-        <Form.Control
-          placeholder="auto"
-          data-game="auto3d"
-          type="number"
-          value={auto.auto3d}
-          onChange={manageAuto}
-        />
-      </th>
-      <th>
-        <Form.Text>Taruhan 2D</Form.Text>
-        <Form.Control
-          placeholder="auto"
-          data-game="auto2d"
-          type="number"
-          value={auto.auto2d}
-          onChange={manageAuto}
-        />
-      </th>
-      <th>BB</th>
       <th>
         <Button
           style={{ width: "auto" }}
@@ -312,7 +175,7 @@ const Xd = ({ markets }) => {
     <>
       <Row>
         <Col>
-          <h2>4D, 3D, 2D</h2>
+          <h2>2D Tengah</h2>
           <h5>IDR 1,000 = 1</h5>
         </Col>
       </Row>
@@ -328,7 +191,7 @@ const Xd = ({ markets }) => {
             >
               <thead className="table-dark">
                 <tr>
-                  <td colSpan={7}>
+                  <td colSpan={4}>
                     <Form.Group>
                       <Form.Label
                         style={{
@@ -394,12 +257,12 @@ const Xd = ({ markets }) => {
                     </td>
                     <td>
                       <Form.Control
-                        placeholder="ABCD"
+                        placeholder="XABX"
                         min={0}
                         type="number"
-                        max={9999}
-                        pattern="[0-9]{2,4}"
-                        maxLength={4}
+                        max={99}
+                        pattern="[0-9]{2}"
+                        maxLength={2}
                         value={bet.number}
                         data-field="number"
                         data-bet={index}
@@ -408,48 +271,13 @@ const Xd = ({ markets }) => {
                     </td>
                     <td>
                       <Form.Control
-                        placeholder="4D"
-                        min={0}
-                        type="number"
-                        disabled={!bet.number || bet.number.length < 4}
-                        value={bet.d4}
-                        data-field="d4"
-                        data-bet={index}
-                        onChange={updateBet}
-                      />
-                    </td>
-                    <td>
-                      <Form.Control
-                        placeholder="3D"
-                        min={0}
-                        type="number"
-                        disabled={!bet.number || bet.number.length < 3}
-                        value={bet.d3}
-                        data-field="d3"
-                        data-bet={index}
-                        onChange={updateBet}
-                      />
-                    </td>
-                    <td>
-                      <Form.Control
-                        placeholder="2D"
+                        placeholder="2D Tengah"
                         min={0}
                         type="number"
                         disabled={!bet.number || bet.number.length < 2}
-                        value={bet.d2}
-                        data-field="d2"
+                        value={bet.amount}
+                        data-field="amount"
                         data-bet={index}
-                        onChange={updateBet}
-                      />
-                    </td>
-
-                    <td>
-                      <Form.Check
-                        type="switch"
-                        id={`bb-bet-${index}`}
-                        data-field="bb"
-                        data-bet={index}
-                        checked={bet.bb}
                         onChange={updateBet}
                       />
                     </td>
@@ -614,4 +442,4 @@ const Xd = ({ markets }) => {
   )
 }
 
-export default Xd
+export default Game

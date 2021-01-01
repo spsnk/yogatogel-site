@@ -34,7 +34,8 @@ const Profile = location => {
     userId: "009239123",
     username: "nyan093",
     name: "Nyan",
-    // image: "cc7cf55af2f800813d456a6ae2de6fd2.jpg",
+    //image: "cc7cf55af2f800813d456a6ae2de6fd2.jpg",
+    image: null,
     email: "example@gmail.com",
     phone: "555-5555",
     credit: 2.691,
@@ -83,7 +84,7 @@ const Profile = location => {
           <Row as="section">
             <Col>
               <h3>Personal Info</h3>
-              <Form onSubmit={handleSubmit}>
+              <Form onSubmit={handleSubmit} className="profile">
                 <Form.Group controlId="userinfo-userid">
                   <Form.Control
                     type="text"
@@ -144,7 +145,7 @@ const Profile = location => {
                     type="text"
                     value={bank}
                     readOnly
-                    hidden={false}
+                    hidden={true}
                   />
                 </Form.Group>
                 <Form.Group controlId="userinfo-bankAccount">

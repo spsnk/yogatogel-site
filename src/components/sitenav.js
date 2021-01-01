@@ -122,8 +122,8 @@ const Sitenav = () => {
               <ListGroup.Item
                 action
                 as={Link}
-                eventKey={"free"}
-                to="/games/free"
+                eventKey={"freepick"}
+                to="/games/freepick"
                 state={{ game: "free" }}
               >
                 Colok Bebas
