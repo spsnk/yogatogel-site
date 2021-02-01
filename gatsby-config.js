@@ -10,7 +10,7 @@ module.exports = {
     title: `YogaTogel`,
     description: `Cara Main Togel`,
     icon: "src/images/logo.png",
-    author: `@spsnk`,
+    author: `@prido`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
