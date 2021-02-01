@@ -23,10 +23,13 @@ form .btn,
   border-radius: 20px;
 }
 
-.login .form-control,
-form button {
+.login .form-control, .login button, .profile button {
   width: 120px;
   margin: 0.2em;
+}
+
+.bg-warning, .togel-active {
+  background-color: #e7bb64 !important;
 }
 
 form input,
@@ -35,11 +38,12 @@ form .form-control,
 form .custom-select {
   max-width: 250px;
   border-radius: 20px;
-  margin-right: 1rem;
+  /* margin-right: 1rem; */
 }
 
-.form-register button {
-  background-color: #f1cb82;
+.register-button {
+  background-color: #e7bb64;
+  animation: flash 0.9s ease-out infinite;
 }
 
 option[disabled] {
@@ -65,9 +69,9 @@ h5 {
   background-color: #946d24;
 }
 
-.navmenu {
+/* .navmenu {
   margin-bottom: 1rem;
-}
+} */
 
 footer {
   position: absolute;
@@ -103,8 +107,9 @@ footer {
   color: #fff;
 }
 
-#content {
-  padding-bottom: calc(72px + 1em);
+.content {
+  min-height: calc(100vh - (103px + 36px + 72px));
+  padding-bottom: 72px;
 }
 
 .register-button {
@@ -118,13 +123,15 @@ footer {
 }
 
 .list-group-item {
-  border-left: 1px solid transparent;
-  border-right: 1px solid transparent;
-  border-top: 1px solid transparent;
-  border-bottom: 1px solid #0e305d;
+  border-left-color: transparent !important;
+  border-right-color: transparent !important;
+  border-top-color: transparent !important;
+  border-bottom-color: #0e305d !important;
   color: #0e305d;
   font-weight: bold;
   letter-spacing: -1px;
+  margin: 0 !important;
+  border-width: 1px !important;
 }
 
 .list-group-item.active {
@@ -151,10 +158,10 @@ footer {
   top: 50%;
   transform: translateY(-50%);
 }
-
+/* 
 .ticker__container {
   margin-top: 1em;
-}
+} */
 
 .ticker__container .row {
   height: 3em;
@@ -168,14 +175,14 @@ footer {
   font-weight: bolder;
   display: inline-flex;
   text-align: center;
-  max-width: 7em;
+  max-width: 10em;
 }
 
 .ticker__title::after {
   position: absolute;
   z-index: -1;
   content: "";
-  right: -2em;
+  right: -1em;
   top: 0;
   height: 100%;
   width: 100%;
@@ -184,10 +191,6 @@ footer {
   -moz-transform: skewX(-10deg) translateX(-15px);
   -ms-transform: skewX(-10deg) translateX(-15px);
   transform: skewX(-10deg) translateX(-15px);
-}
-
-.sitenav {
-  width: 15em;
 }
 
 .list-group > .list-group .list-group-item {
@@ -203,13 +206,56 @@ footer {
   border-left: 5px solid #0c305d;
 }
 
-.submenu:before {
+/* .submenu:before {
   content: "+";
   margin-right: 0.5em;
 }
 .submenu.active:before {
   content: "-";
   margin-right: 0.5em;
+} */
+
+.submenu span {
+  position: relative;
+  display: inline-flex;
+  border-radius: 2px;
+  width: 1em;
+  height: 1em;
+  margin: 0;
+  line-height: inherit;
+}
+
+.submenu.active span:after,
+.submenu.active span:before {
+  transform: rotate(90deg);
+  background: white;
+}
+
+.submenu.active span:after {
+  left: 50%;
+  right: 50%;
+}
+
+.submenu span:before {
+  content: "";
+  background: #0e305d;
+  position: absolute;
+  transition: 0.3s;
+  top: 25%;
+  left: 45%;
+  bottom: 25%;
+  width: 10%;
+}
+
+.submenu span:after {
+  content: "";
+  background: #0e305d;
+  position: absolute;
+  transition: 0.3s;
+  top: 45%;
+  left: 25%;
+  right: 25%;
+  height: 10%;
 }
 
 .btn-logout {
@@ -231,4 +277,73 @@ footer {
     0% 50%
   ); */
   clip-path: polygon(30% 20%, 100% 20%, 100% 80%, 30% 80%, 0% 50%);
+}
+
+.btn-primary {
+  background-color: #0e305d;
+}
+
+.btn-warning {
+  background-color: #f1cb82;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.betTable > tbody > tr > td {
+  vertical-align: middle;
+}
+
+.betTable input,
+.betTable select {
+  border-radius: 4px;
+}
+
+.betPanel input {
+  padding: 0.15rem;
+  /* width: 3rem; */
+  height: 2rem;
+}
+
+.betTable thead,
+.betTable tfoot,
+.betTable select {
+  background-color: #0e305d;
+}
+
+.betTable .table-dark:hover {
+  background-color: #0e305d;
+}
+
+.betTable select,
+.betTable input[type="checkbox"],
+.betTable .custom-control-label {
+  cursor: pointer;
+}
+
+.betTable .table-dark tr:hover {
+  background-color: inherit;
+}
+
+.inherit {
+  color: inherit;
+}
+
+@keyframes flash {
+  0% {
+    text-shadow: 0px 0px 5px #fff, 0px 0px 5px #fff, 0px 0px 5px #fff,
+      0px 0px 5px #fff, 0px 0px 5px #fff, 0px 0px 5px #fff, 0px 0px 5px #fff,
+      0px 0px 25px #fff, 0px 0px 5px #fff, 0px 0px 5px #fff, 0px 0px 5px #7b96b8,
+      0px 0px 5px #7b96b8, 0px 10px 5px #ffffe8, 0px 10px 50px #ffffe8,
+      0px 10px 100px #e4be0d, 0px 10px 100px #e4be0d, 0px -10px 100px #e4be0d,
+      0px -10px 100px #e4be0d;
+    color: #ffe674;
+  }
+}
+
+.custom-control-inline {
+  margin-right: 0;
 }

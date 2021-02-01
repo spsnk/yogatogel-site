@@ -1,9 +1,8 @@
-import { graphql, Link, useStaticQuery } from "gatsby"
+import { graphql, useStaticQuery } from "gatsby"
 import Img from "gatsby-image"
 import React from "react"
-import { Button, Carousel, Col, Row } from "react-bootstrap"
+import { Carousel, Col, Row } from "react-bootstrap"
 import SEO from "src/components/seo"
-import Sitenav from "src/components/sitenav"
 
 export default function Home() {
   const data = useStaticQuery(graphql`
@@ -35,25 +34,29 @@ export default function Home() {
     <>
       <SEO title="Home" />
       <Row>
-        <Sitenav
-          activeKey="home"
-          children={
-            <Button
-              as={Link}
-              to="/account/register?ref=exampleReferral"
-              className="register-button mx-auto"
-            >
-              DAFTAR
-            </Button>
-          }
-        />
-        <Col as="section" style={{ maxWidth: "75vw", marginLeft: "auto" }}>
+        <Col as="section">
           <Carousel id="index-carousel">
-            <Carousel.Item key="slide-1">
-              <Img fluid={data.bg1.childImageSharp.fluid} />
+            <Carousel.Item
+              key="slide-1"
+              style={{
+                maxHeight: "calc(100vh - (103px + 36px + 72px))",
+              }}
+            >
+              <Img
+                fluid={data.bg1.childImageSharp.fluid}
+                style={{ maxHeight: "calc(100vh - (103px + 36px + 72px))" }}
+              />
             </Carousel.Item>
-            <Carousel.Item key="slide-2">
-              <Img fluid={data.bg2.childImageSharp.fluid} />
+            <Carousel.Item
+              key="slide-2"
+              style={{
+                maxHeight: "calc(100vh - (103px + 36px + 72px))",
+              }}
+            >
+              <Img
+                fluid={data.bg2.childImageSharp.fluid}
+                style={{ maxHeight: "calc(100vh - (103px + 36px + 72px))" }}
+              />
             </Carousel.Item>
           </Carousel>
         </Col>

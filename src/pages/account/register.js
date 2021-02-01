@@ -2,7 +2,6 @@ import Qstring from "query-string"
 import React from "react"
 import { Button, Col, Form, Row } from "react-bootstrap"
 import SEO from "src/components/seo"
-import Sitenav from "src/components/sitenav"
 
 const Register = ({ location }) => {
   const qdata = Qstring.parse(location.search)
@@ -12,7 +11,6 @@ const Register = ({ location }) => {
     <>
       <SEO title="Daftar akun" />
       <Row>
-        <Sitenav activeKey="register" />
         <Col>
           <section>
             <h2>Pendaftaran</h2>
