@@ -25,12 +25,14 @@ const Layout = ({ children }) => {
       }
     }
   `)
+  {
+    console.log(
+      "\u00A9 Prido. Software version " + data.site.siteMetadata.version
+    )
+  }
 
   return (
     <>
-      {console.log(
-        "\u00A9 Prido. Software version " + data.site.siteMetadata.version
-      )}
       <Container as="main" fluid>
         <Nav siteTitle={data.site.siteMetadata.title} />
         <CustomTicker />
