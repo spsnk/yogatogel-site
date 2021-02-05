@@ -20,15 +20,12 @@ const Layout = ({ children }) => {
       site {
         siteMetadata {
           title
-          version
         }
       }
     }
   `)
   {
-    console.log(
-      "\u00A9 Prido. Software version " + data.site.siteMetadata.version
-    )
+    console.log("\u00A9 Prido. Software version 0.9.1")
   }
 
   return (
