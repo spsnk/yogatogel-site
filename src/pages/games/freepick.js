@@ -9,7 +9,7 @@ const Play = () => {
         free: {
           game_id: 234,
           discount: 10,
-          fee: 3,
+          fee: 0,
         },
       },
     },
@@ -19,7 +19,7 @@ const Play = () => {
         free: {
           game_id: 234,
           discount: 10,
-          fee: 3,
+          fee: 0,
         },
       },
     },
@@ -29,7 +29,7 @@ const Play = () => {
         free: {
           game_id: 234,
           discount: 10,
-          fee: 3,
+          fee: 0,
         },
       },
     },
@@ -38,7 +38,7 @@ const Play = () => {
       games: {
         free: {
           game_id: 234,
-          discount: 0,
+          discount: 5,
           fee: 0,
         },
       },
