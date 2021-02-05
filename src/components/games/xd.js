@@ -125,7 +125,7 @@ const Xd = ({ markets }) => {
             total: total,
           }
           if (b.bb) {
-            let _bbets = getBB(bet)
+            let _bbets = getBB(b.number, bet, 4)
             _bbets.forEach(bb => {
               ticket.bets.push(bb)
             })
@@ -158,7 +158,7 @@ const Xd = ({ markets }) => {
             total: total,
           }
           if (b.bb) {
-            let _bbets = getBB(bet)
+            let _bbets = getBB(b.number, bet, 3)
             _bbets.forEach(bb => {
               ticket.bets.push(bb)
             })
@@ -191,7 +191,7 @@ const Xd = ({ markets }) => {
             total: total,
           }
           if (b.bb) {
-            let _bbets = getBB(bet)
+            let _bbets = getBB(b.number, bet, 2)
             _bbets.forEach(bb => {
               ticket.bets.push(bb)
             })
@@ -242,10 +242,12 @@ const Xd = ({ markets }) => {
     return item
   }
 
-  const getBB = bb_bet => {
-    let bet_number = bb_bet.number
-    let combinations = findPermutations(bet_number)
+  const getBB = (bet_number, bb_bet, size = 4) => {
+    //let bet_number = bb_bet.number
+    let permutations = findPermutations(bet_number)
     let items = []
+    let combinations = new Set()
+    permutations.forEach(number => combinations.add(number.slice(0, size)))
     combinations.forEach(number => {
       let bet = { ...bb_bet }
       bet.number = number
