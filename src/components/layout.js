@@ -24,9 +24,6 @@ const Layout = ({ children }) => {
       }
     }
   `)
-  {
-    console.log("\u00A9 Prido. Software version 0.9.1")
-  }
 
   return (
     <>

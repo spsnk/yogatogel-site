@@ -8,6 +8,7 @@ require("./src/assets/main.css")
 
 const React = require("react")
 const Layout = require("./src/components/layout").default
+const version = require("./package.json").version
 
 export const wrapPageElement = ({ element, props }) => {
   return <Layout {...props}>{element}</Layout>
@@ -15,6 +16,7 @@ export const wrapPageElement = ({ element, props }) => {
 
 export const onClientEntry = () => {
   // IntersectionObserver polyfill for gatsby-background-image (Safari, IE)
+  console.log("\u00A9 Prido. Togel v" + version)
   if (typeof window.IntersectionObserver === `undefined`) {
     require(`intersection-observer`)
     console.log(`# IntersectionObserver is polyfilled!`)

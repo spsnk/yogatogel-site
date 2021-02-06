@@ -11,7 +11,6 @@ module.exports = {
     description: `Cara Main Togel`,
     icon: "src/images/logo.png",
     author: `@prido`,
-    version: "0.9.1",
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
