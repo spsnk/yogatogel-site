@@ -31,10 +31,17 @@ const Layout = ({ children }) => {
         <Nav siteTitle={data.site.siteMetadata.title} />
         <CustomTicker />
         <Row className="content">
+<<<<<<< HEAD
           <Col md="3" lg="2" xl="1">
             <Sitenav />
           </Col>
           <Col md="9" lg="10" xl="11">
+=======
+          <Col md="3" lg="2">
+            <Sitenav />
+          </Col>
+          <Col md="9" lg="10">
+>>>>>>> develop
             {children}
           </Col>
         </Row>
