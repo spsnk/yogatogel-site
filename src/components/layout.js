@@ -20,7 +20,6 @@ const Layout = ({ children }) => {
       site {
         siteMetadata {
           title
-          version
         }
       }
     }
@@ -28,17 +27,14 @@ const Layout = ({ children }) => {
 
   return (
     <>
-      {console.log(
-        "\u00A9 Prido. Software version " + data.site.siteMetadata.version
-      )}
       <Container as="main" fluid>
         <Nav siteTitle={data.site.siteMetadata.title} />
         <CustomTicker />
         <Row className="content">
-          <Col md="3" lg="2" xg="1">
+          <Col md="3" lg="2" xl="1">
             <Sitenav />
           </Col>
-          <Col md="9" lg="10" xg="11">
+          <Col md="9" lg="10" xl="11">
             {children}
           </Col>
         </Row>
