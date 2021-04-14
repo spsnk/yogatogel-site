@@ -603,7 +603,11 @@ const Xd = ({ markets }) => {
                   </React.Fragment>
                 ))}
             </Table>
-            <Button variant="warning" className="mx-auto">
+            <Button
+              variant="warning"
+              className="mx-auto"
+              onClick={() => console.log(bets)}
+            >
               Submit
             </Button>
             <Button variant="danger" className="mx-auto" onClick={resetBets}>

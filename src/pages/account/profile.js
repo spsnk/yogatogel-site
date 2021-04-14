@@ -38,7 +38,7 @@ const Profile = location => {
     image: null,
     email: "example@gmail.com",
     phone: "555-5555",
-    credit: 2.691,
+    credit: 269100,
     bonus: 0,
     outstandingBet: 0,
     bank: "2",

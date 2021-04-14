@@ -35,7 +35,8 @@ form .btn,
 form input,
 form select,
 form .form-control,
-form .custom-select {
+form .custom-select,
+form .input-group-text {
   max-width: 250px;
   border-radius: 20px;
   /* margin-right: 1rem; */
@@ -287,8 +288,8 @@ footer {
   background-color: #f1cb82;
 }
 
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
+table input[type="number"]::-webkit-inner-spin-button,
+table input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
