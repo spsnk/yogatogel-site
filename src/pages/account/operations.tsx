@@ -73,12 +73,13 @@ const Operations: React.FC<PageProps> = props => {
     let value: string | number = target.value
     let security_amount = 0
     if (field === "amount") {
-      if (!isNaN(parseInt(value))) {
-        value = parseInt(value)
-        if (transaction.type === "deposit" && value > 9999) {
-          security_amount = Math.floor(Math.random() * 99)
-        }
-      }
+      value = parseInt(value) | 0
+    }
+    if (
+      (field === "type" && value === "deposit" && transaction.amount > 9999) ||
+      (transaction.type === "deposit" && value > 9999)
+    ) {
+      security_amount = Math.floor(Math.random() * 99) + 1
     }
 
     setTransaction({
