@@ -135,7 +135,7 @@ const Operations: React.FC<PageProps> = props => {
     let value: string | number = target.value
     let target_transaction = { ...transaction }
     if (field === "amount") {
-      value = isNaN(parseInt(value)) ? "" : parseInt(value)
+      value = isNaN(parseInt(value)) ? 0 : parseInt(value)
     } else if (field === "type") {
       setResponse(undefined)
       setStatus(undefined)
@@ -378,7 +378,10 @@ const Operations: React.FC<PageProps> = props => {
                     <Form.Group>
                       <Form.Text>Deposit</Form.Text>
                       <InputGroup>
-                        <Form.Control readOnly value={transaction.amount} />
+                        <Form.Control
+                          readOnly
+                          value={transaction.amount.toLocaleString()}
+                        />
                         <InputGroup.Append>
                           <InputGroup.Text>Rp.</InputGroup.Text>
                         </InputGroup.Append>
@@ -423,7 +426,10 @@ const Operations: React.FC<PageProps> = props => {
                         <strong>Rp. {user.credit.toLocaleString()}</strong>
                       </Form.Text>
                       <InputGroup>
-                        <Form.Control readOnly value={transaction.amount} />
+                        <Form.Control
+                          readOnly
+                          value={transaction.amount.toLocaleString()}
+                        />
                         <InputGroup.Append>
                           <InputGroup.Text>Rp.</InputGroup.Text>
                         </InputGroup.Append>
