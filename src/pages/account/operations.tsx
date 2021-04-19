@@ -1,4 +1,9 @@
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons"
+import {
+  faArrowLeft,
+  faCheck,
+  faExclamation,
+  faSync,
+} from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { PageProps } from "gatsby"
 import { navigate } from "gatsby-link"
@@ -58,41 +63,126 @@ const banks = [
   },
 ]
 
+const SubmitButton: React.FC<{ status?: "loading" | "error" | "success" }> = ({
+  status,
+}) => {
+  let variant,
+    content,
+    icon,
+    disabled = true
+  switch (status) {
+    case "loading":
+      variant = "info"
+      icon = faSync
+      content = "Loading"
+      break
+    case "error":
+      variant = "danger"
+      icon = faExclamation
+      content = "Error"
+      break
+    case "success":
+      variant = "success"
+      icon = faCheck
+      content = " Success"
+      break
+    default:
+      variant = "warning"
+      content = "Request"
+      disabled = false
+  }
+
+  return (
+    <Button
+      type="submit"
+      className={disabled ? "pseudo-disabled" : ""}
+      variant={variant}
+    >
+      {icon && (
+        <FontAwesomeIcon
+          icon={icon}
+          className={status == "loading" ? "fa-spin fa-fw" : "fa-fw"}
+        />
+      )}{" "}
+      {content}
+    </Button>
+  )
+}
+
+interface Transaction_response {
+  tx_id: number
+  request: Date
+  amount: number
+  type: "deposit" | "withdraw"
+  security_amount: number
+}
+
 const Operations: React.FC<PageProps> = props => {
-  const operation = {
+  const operation: { type: "deposit" | "withdraw"; amount: number } = {
     type: "deposit",
     amount: 10000,
-    security_amount: Math.floor(Math.random() * 99),
   }
 
   const [transaction, setTransaction] = useState(operation)
+  const [status, setStatus] = useState<
+    "loading" | "error" | "success" | undefined
+  >(undefined)
+  const [response, setResponse] = useState<Transaction_response | undefined>()
 
   const handleTransactionChange: React.ChangeEventHandler<HTMLInputElement> = event => {
     const target = event.currentTarget
     const field = target.name
     let value: string | number = target.value
-    let security_amount = 0
+    let target_transaction = { ...transaction }
     if (field === "amount") {
       value = parseInt(value) | 0
+    } else if (field === "type") {
+      setResponse(undefined)
+      setStatus(undefined)
+      if (value === "deposit") {
+        target_transaction.amount = 10000
+      } else if (value === "withdraw") {
+        target_transaction.amount = 50000
+      }
     }
-    if (
-      (field === "type" && value === "deposit" && transaction.amount > 9999) ||
-      (transaction.type === "deposit" && value > 9999)
-    ) {
-      security_amount = Math.floor(Math.random() * 99) + 1
-    }
+    target_transaction = { ...target_transaction, [field]: value }
 
-    setTransaction({
-      ...transaction,
-      [field]: value,
-      security_amount: security_amount,
-    })
+    setTransaction(target_transaction)
   }
 
-  const handleSubmit: React.FormEventHandler = event => {
+  const handleSubmit: React.FormEventHandler = async event => {
     event.stopPropagation()
     event.preventDefault()
+    const security_amount = Math.floor(Math.random() * 99) + 1
     console.log(transaction)
+    setStatus("loading")
+
+    try {
+      let api_response: Transaction_response = await new Promise(
+        (resolve, reject) => {
+          setTimeout(() => {
+            if (Math.random() > 0.5) {
+              resolve({
+                tx_id: 12341,
+                request: new Date(),
+                amount: transaction.amount,
+                type: transaction.type,
+                security_amount: security_amount,
+              })
+            } else {
+              reject({ message: "error" })
+            }
+          }, 750)
+        }
+      )
+      setStatus("success")
+      setResponse(api_response)
+      console.log(api_response)
+    } catch (err) {
+      setStatus("error")
+      console.log(err)
+      setTimeout(() => setStatus(undefined), 1500)
+    }
   }
 
   const handleFocus: React.FocusEventHandler<HTMLInputElement> = e =>
@@ -159,6 +249,19 @@ const Operations: React.FC<PageProps> = props => {
                     />
                     <InputGroup.Append>
                       <InputGroup.Text>Rp.</InputGroup.Text>
+                      {/* <Button
+                        type="submit"
+                        disabled={loading}
+                        variant={loading ? "info" : "warning"}
+                        style={{ width: loading ? "2.8rem" : "5.2rem" }}
+                      >
+                        {loading ? (
+                          <FontAwesomeIcon icon={faSync} className="fa-spin" />
+                        ) : (
+                          "Request"
+                        )}
+                      </Button> */}
+                      <SubmitButton status={status} />
                     </InputGroup.Append>
                   </InputGroup>
                   {transaction.type === "deposit" && (
@@ -172,28 +275,116 @@ const Operations: React.FC<PageProps> = props => {
                     </Form.Text>
                   )}
                 </Form.Group>
-                <Collapse in={transaction.type == "deposit"}>
+                <Collapse in={status === "success"}>
+                  <div>
+                    {transaction.type === "deposit" && response != undefined && (
+                      <>
+                        <h4>Your request has been sent.</h4>
+                        <h4>Please deposit the following amount as follows:</h4>
+                        <Form.Group>
+                          <Form.Text>Deposit amount:</Form.Text>
+                          <Form.Control
+                            readOnly
+                            plaintext
+                            value={
+                              (
+                                response.amount + response.security_amount
+                              ).toLocaleString() + " Rp."
+                            }
+                            style={{ fontWeight: "bold" }}
+                          />
+                          <Form.Text muted>
+                            A small random amount has been added for faster
+                            processing.
+                          </Form.Text>
+                        </Form.Group>
+                        <Form.Group>
+                          <Form.Text>Nama Bank</Form.Text>
+                          <Form.Control
+                            readOnly
+                            plaintext
+                            value={bank?.bank_shortname}
+                            style={{ fontWeight: "bold" }}
+                          />
+                        </Form.Group>
+                        <Form.Group>
+                          <Form.Text>Nomor Rekening</Form.Text>
+                          <Form.Control
+                            readOnly
+                            plaintext
+                            value={bank?.account_number}
+                            style={{ fontWeight: "bold" }}
+                          />
+                        </Form.Group>
+                        <Form.Group>
+                          <Form.Text>Atas Nama</Form.Text>
+                          <Form.Control
+                            readOnly
+                            plaintext
+                            value={bank?.account_holder}
+                            style={{ fontWeight: "bold" }}
+                          />
+                        </Form.Group>
+                      </>
+                    )}
+                    {transaction.type === "withdraw" && response != undefined && (
+                      <>
+                        <h4>Your request has been sent.</h4>
+                        <Form.Group>
+                          <Form.Text>Withdraw amount:</Form.Text>
+                          <Form.Control
+                            readOnly
+                            plaintext
+                            value={response.amount.toLocaleString() + " Rp."}
+                            style={{ fontWeight: "bold" }}
+                          />
+                        </Form.Group>
+                        <Form.Group>
+                          <Form.Text>Nama Bank</Form.Text>
+                          <Form.Control
+                            readOnly
+                            plaintext
+                            value={bank?.bank_shortname}
+                            style={{ fontWeight: "bold" }}
+                          />
+                        </Form.Group>
+                        <Form.Group>
+                          <Form.Text>Nomor Rekening</Form.Text>
+                          <Form.Control
+                            readOnly
+                            plaintext
+                            value={user.bankAccount}
+                            style={{ fontWeight: "bold" }}
+                          />
+                        </Form.Group>
+                        <Form.Group>
+                          <Form.Text>Atas Nama</Form.Text>
+                          <Form.Control
+                            readOnly
+                            plaintext
+                            value={user.bankAccountName}
+                            style={{ fontWeight: "bold" }}
+                          />
+                        </Form.Group>
+                      </>
+                    )}
+                  </div>
+                </Collapse>
+                <Collapse
+                  in={transaction.type == "deposit" && response == undefined}
+                >
                   <div style={{ paddingTop: "0.01rem" }}>
                     <h5>Silahkan transfer ke rekening dibawah ini.</h5>
                     <Form.Group>
                       <Form.Text>Deposit</Form.Text>
                       <InputGroup>
-                        <Form.Control
-                          readOnly
-                          value={
-                            (transaction.amount + transaction.security_amount) |
-                            0
-                          }
-                        />
+                        <Form.Control readOnly value={transaction.amount} />
                         <InputGroup.Append>
                           <InputGroup.Text>Rp.</InputGroup.Text>
-                          <Button type="submit" variant="warning">
-                            Request
-                          </Button>
                         </InputGroup.Append>
                       </InputGroup>
                       <Form.Text className="text-muted">
-                        Jumlah acak kecil telah ditambahkan untuk pemrosesan
+                        Jumlah acak kecil akan ditambahkan untuk pemrosesan
                         lebih cepat.
                       </Form.Text>
                     </Form.Group>
@@ -221,7 +412,9 @@ const Operations: React.FC<PageProps> = props => {
                     </Form.Group>
                   </div>
                 </Collapse>
-                <Collapse in={transaction.type === "withdraw"}>
+                <Collapse
+                  in={transaction.type === "withdraw" && response == undefined}
+                >
                   <div style={{ paddingTop: "0.01rem" }}>
                     <h5>Dana akan dikirm ke rekening berikut.</h5>
                     <Form.Group>
@@ -233,9 +426,6 @@ const Operations: React.FC<PageProps> = props => {
                         <Form.Control readOnly value={transaction.amount} />
                         <InputGroup.Append>
                           <InputGroup.Text>Rp.</InputGroup.Text>
-                          <Button type="submit" variant="warning">
-                            Request
-                          </Button>
                         </InputGroup.Append>
                       </InputGroup>
                     </Form.Group>

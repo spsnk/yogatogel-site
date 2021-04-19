@@ -348,3 +348,7 @@ table input[type="number"]::-webkit-outer-spin-button {
 .custom-control-inline {
   margin-right: 0;
 }
+
+.pseudo-disabled {
+  pointer-events: none;
+}
