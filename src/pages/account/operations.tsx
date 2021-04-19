@@ -135,7 +135,7 @@ const Operations: React.FC<PageProps> = props => {
     let value: string | number = target.value
     let target_transaction = { ...transaction }
     if (field === "amount") {
-      value = parseInt(value) | 0
+      value = isNaN(parseInt(value)) ? "" : parseInt(value)
     } else if (field === "type") {
       setResponse(undefined)
       setStatus(undefined)
@@ -237,7 +237,7 @@ const Operations: React.FC<PageProps> = props => {
                   <InputGroup>
                     <Form.Control
                       type="number"
-                      value={transaction.amount}
+                      value={transaction.amount.toString()}
                       onChange={handleTransactionChange}
                       onFocus={handleFocus}
                       name="amount"
