@@ -10,13 +10,7 @@ const Footer = () => {
   return (
     <Row as="footer" className="align-items-center">
       <Col>
-        <span>&copy; YOGACORP all rights reserved.</span>
-        {/* <span className="d-sm-none d-none d-lg-flex">
-          YOGACORP merupakan situs judi tebak online sebagal negara melarang
-          PERJUDIAN. <br />
-          Segala tinkadan pelanggaran HUKUM bukan merupakan tanggung jawab
-          PENGELOLA.
-        </span> */}
+        <span>&copy; Prido all rights reserved.</span>
       </Col>
       <Col className="ml-auto d-flex align-items-center">
         <div className="ml-auto d-flex align-items-center">

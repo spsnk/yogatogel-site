@@ -81,15 +81,15 @@ footer {
   right: 0;
   background-color: #e7bb64;
   color: #fff;
-  font-weight: bold;
+  /* font-weight: bold; */
   width: 100%;
   margin-left: 0px !important;
   margin-right: 0px !important;
   display: flex;
 }
 .social {
-  font-size: 3em;
-  margin-left: 0.2em;
+  font-size: 1.5rem;
+  margin-left: 0.2rem;
 }
 
 .social a {

@@ -25,7 +25,7 @@ const CustomTicker = () => {
             <Ticker>
               {() => (
                 <div className="ticker__item text-nowrap">
-                  <h6>Running Text - New Yogacorp Togel!!! - </h6>
+                  <h6>Running Text - New Togel!!! - </h6>
                 </div>
               )}
             </Ticker>
