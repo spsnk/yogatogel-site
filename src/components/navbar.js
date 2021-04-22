@@ -1,19 +1,23 @@
 import React from "react"
 import { useStaticQuery, graphql, Link } from "gatsby"
 import { Navbar, Nav, Container, Row, Col } from "react-bootstrap"
-import Img from "gatsby-image"
+import { GatsbyImage } from "gatsby-plugin-image"
 import Login from "./login"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faHome, faTable } from "@fortawesome/free-solid-svg-icons"
 
 const Navmenu = () => {
   const data = useStaticQuery(graphql`
-    query {
+    {
       logo: file(relativePath: { eq: "logo.png" }) {
         childImageSharp {
-          fixed(height: 70, quality: 80, traceSVG: { color: "#fff" }) {
-            ...GatsbyImageSharpFixed_tracedSVG
-          }
+          gatsbyImageData(
+            height: 70
+            quality: 80
+            placeholder: TRACED_SVG
+            tracedSVGOptions: { color: "#fff" }
+            layout: FIXED
+          )
         }
       }
     }
@@ -33,7 +37,10 @@ const Navmenu = () => {
       <Col>
         <Container>
           <Navbar.Brand as={Link} to="/">
-            <Img fixed={data.logo.childImageSharp.fixed} />
+            <GatsbyImage
+              image={data.logo.childImageSharp.gatsbyImageData}
+              alt="logo"
+            />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse>
