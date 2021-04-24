@@ -13,11 +13,13 @@ module.exports = {
     description: `Cara Main Togel`,
     icon: "src/images/logo.png",
     author: `@prido`,
-    version: "0.9.3",
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
     `gatsby-transformer-json`,
+    `gatsby-plugin-image`,
+    `gatsby-plugin-sharp`,
+    `gatsby-transformer-sharp`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -32,8 +34,6 @@ module.exports = {
         path: `${__dirname}/src/images`,
       },
     },
-    `gatsby-transformer-sharp`,
-    `gatsby-plugin-sharp`,
     {
       resolve: `gatsby-plugin-manifest`,
       options: {

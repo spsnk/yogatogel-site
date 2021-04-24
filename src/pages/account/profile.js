@@ -1,7 +1,7 @@
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { graphql, navigate, useStaticQuery } from "gatsby"
-import Img from "gatsby-image"
+import { GatsbyImage } from "gatsby-plugin-image"
 import React, { useRef, useState } from "react"
 import {
   Button,
@@ -20,12 +20,15 @@ import SEO from "src/components/seo"
 
 const Profile = location => {
   const data = useStaticQuery(graphql`
-    query {
+    {
       default: file(relativePath: { eq: "default-user.png" }) {
         childImageSharp {
-          fixed(width: 200, quality: 80) {
-            ...GatsbyImageSharpFixed_withWebp_tracedSVG
-          }
+          gatsbyImageData(
+            width: 200
+            quality: 80
+            placeholder: TRACED_SVG
+            layout: FIXED
+          )
         }
       }
     }
@@ -233,9 +236,9 @@ const Profile = location => {
                     alt="User profile"
                   />
                 ) : (
-                  <Img
+                  <GatsbyImage
+                    image={data.default.childImageSharp.gatsbyImageData}
                     className="rounded-circle"
-                    fixed={data.default.childImageSharp.fixed}
                     alt="User profile"
                   />
                 )}

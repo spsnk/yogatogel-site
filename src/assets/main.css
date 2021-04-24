@@ -44,7 +44,7 @@ form .input-group-text {
 
 .register-button {
   background-color: #e7bb64;
-  animation: flash 0.9s ease-out infinite;
+  /* animation: flash 0.9s ease-out infinite; */
 }
 
 option[disabled] {
